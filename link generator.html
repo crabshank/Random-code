@@ -1,0 +1,40 @@
+<html>
+
+<head>
+<style>
+input{
+width:95%;
+background-color: buttonface;
+}
+
+button{
+background-color: buttonface;
+}
+a#url {
+    margin-left: 4.23%;
+}
+</style>
+
+</head>
+
+<body>
+<button type="button" id="btn">Clear</button>
+<input type="text" id="txtBx"></input>
+<br>
+<a id="url" href="Enter"></a>
+<script>
+var b=document.getElementById("btn");
+var u=document.getElementById("txtBx");
+var a=document.getElementById("url");
+u.oninput=function(){
+a.href=u.value;
+a.textContent=u.value;
+}
+b.onclick=function(){
+u.value="";
+a.textContent="";
+}
+</script>
+</body>
+
+</html>
