@@ -4,31 +4,13 @@
 </head>
 	
 <body>
-<style>
-h1#ttl{
-text-align: center !important;
-}
-div#instr{
-margin-bottom: 3px !important;
-}
-main{
-margin-top: 5px !important;
-}
-textarea#code{
-min-width: -webkit-fill-available !important;
-min-width: -moz-available !important;
-width: 100% !important;
-box-shadow: 0 0 0px 1px black !important;
-border-width: 0px !important;
-}
-</style>
 <title>Embedding page</title>
-<h1 id="ttl">Embedding page</h1>
-<div id="instr">Paste embed code in the text box below:</div>
-<textarea id="code"></textarea>
-<main></main>
+<h1 style="text-align: center;">Embedding page</h1>
+<div style="margin-bottom: 3px;">Paste embed code in the text box below:</div>
+<textarea style="min-width: -webkit-fill-available; min-width: -moz-available; width: 100%; box-shadow: 0 0 0px 1px black; border-width: 0px;"></textarea>
+<main style="margin-top: 5px;"></main>
 <script>
-var ebd=document.getElementById("code");
+var ebd=document.getElementsByTagName("textarea")[0];
 ebd.oninput=function () {
 ebd.style.height = (ebd.scrollHeight+1)+"px";
 let main1=document.getElementsByTagName("main")[0];
