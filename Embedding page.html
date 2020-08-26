@@ -12,6 +12,7 @@
 <script>
 var ebd=document.getElementsByTagName("textarea")[0];
 ebd.oninput=function () {
+ebd.style.height = 'inherit';
 ebd.style.height = (ebd.scrollHeight+1)+"px";
 let main1=document.getElementsByTagName("main")[0];
 main1.innerHTML=ebd.value;
