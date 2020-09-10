@@ -1,16 +1,6 @@
-
 @if (@CodeSection == @Batch) @then
 
-:: The first line above is...
-:: in Batch, a valid IF command that does nothing.
-:: in JScript, a conditional compilation IF statement that is false.
-::             So the following section is omitted until the next "[at]end".
-:: Note: the "[at]then" does nothing and is only for readablility.
-
-:: Batch Section
-
 @echo off
-
 
 CScript //E:JScript //Nologo "%~f0" %*
 
@@ -19,11 +9,9 @@ exit /b
 
 @end
 
-// JScript Section
-
 try
 {
-//fso
+
 ExistsItem = function (path) {
    return FSOObj.FolderExists(path)||FSOObj.FileExists(path);
 }
@@ -31,9 +19,7 @@ ExistsItem = function (path) {
 getFullPath = function (path) {
     return FSOObj.GetAbsolutePathName(path);
 }
-//
 
-//paths
 getParent = function(path){
    var splitted=path.split("\\");
    var result="";
@@ -47,12 +33,10 @@ getParent = function(path){
    return result;
 }
 
-
 getName = function(path){
    var splitted=path.split("\\");
    return splitted[splitted.length-1];
 }
-//
 
 function main(){
 	
