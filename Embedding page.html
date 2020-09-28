@@ -10,7 +10,17 @@
 <textarea style="min-width: -webkit-fill-available; min-width: -moz-available; width: 100%; box-shadow: 0 0 0px 1px black; border-width: 0px;"></textarea>
 <main style="margin-top: 5px;"></main>
 <script>
-var ebd=document.getElementsByTagName("textarea")[0];
+ebd=document.getElementsByTagName("textarea")[0];
+ebd.style.width=document.body.offsetWidth;
+ebd.style.maxWidth=document.body.offsetWidth;
+ebd.onresize=function(){
+ebd.style.width=document.body.offsetWidth;
+ebd.style.maxWidth=document.body.offsetWidth;
+}
+window.onresize=function(){
+ebd.style.width=document.body.offsetWidth;
+ebd.style.maxWidth=document.body.offsetWidth;
+}
 ebd.oninput=function () {
 ebd.style.height = 'inherit';
 ebd.style.height = (ebd.scrollHeight+1)+"px";
