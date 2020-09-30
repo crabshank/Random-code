@@ -1,0 +1,108 @@
+<html>
+<head>
+</head>
+<body>
+<main style="display: flex;"><textarea style="box-shadow: 0 0 0px 1px black; border-width: 0px;"></textarea><div style="float:right;     margin-inline-start: 4px;"></div></main>
+<script>
+function resize(el,ceil){
+el.style.width=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
+el.style.height=Math.max(window.innerHeight,el.scrollHeight);
+
+document.body.onresize=function(){
+el.style.width=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
+}
+}
+
+ebd=document.getElementsByTagName("textarea")[0];
+resize(ebd,0);
+
+dv=document.getElementsByTagName("div")[0];
+resize(dv,1);
+dv.oninput=function () {
+dv.style.height = 'inherit';
+dv.style.height = (dv.scrollHeight+2)+"px";
+}
+
+function attached_chars(c,str,n){
+let ln='';
+
+for (let i = 0; i < n; i++){
+ln+='\n';
+}
+
+
+
+var sbs= str.split(c);
+for (let i= sbs.length; i-->1;){
+    sbs.splice(i, 0, c);
+}
+for (let i = 0; i < sbs.length-1; i++) {
+   if(sbs[i]==c){
+   let spr=[...sbs[i+1]];
+	   for (let k = 0; k < spr.length; k++) {
+		   if(spr[k]==" "){
+		   spr[k]=ln+spr[k];
+		   k=spr.length-1;
+		   }
+	   }
+	   sbs[i+1]=spr.join('');
+	   i=i+1;
+   }
+}
+		return sbs.join('');
+}
+
+function changer(){
+ebd.style.height = 'inherit';
+ebd.style.height = (dv.scrollHeight+2)+"px";
+dv.innerText=ebd.value;
+
+if(ebd.value!=''){
+let itd=ebd.value.split('\n');
+console.log(itd);
+dv.innerText='¶\n';
+let first = -1;
+
+for (let k = 0; k < itd.length; k++) {
+if (!(itd[k].split(' ').join('')=="")){
+first=k;
+break;
+}
+}
+
+function brk(ln){
+	ln=attached_chars('.',ln,2);
+	ln=attached_chars('?',ln,2);
+	ln=attached_chars('!',ln,2);
+	ln=attached_chars(':',ln,1);
+	ln=attached_chars(';',ln,1);
+	ln=attached_chars(',',ln,1);
+	return ln;
+}
+
+for (let k = 0; k < itd.length; k++) {		
+	if(k<itd.length-1){
+	if ((itd[k].split(' ').join('')=="")&&!(itd[k+1].split(' ').join('')=="")&&(k>=first)){
+	itd[k]='⁋\n\n¶'
+	}else{
+	itd[k]=brk(itd[k]);
+	}
+	}else{
+	itd[k]=brk(itd[k]);		
+	}
+}
+dv.innerText+=itd.join('\n');
+dv.innerText+='\n⁋';
+
+}
+}
+ebd.oninput=function(){
+changer();
+}
+ebd.onchange=function(){
+changer();
+}
+
+</script>
+</body>
+</html>
