@@ -2,14 +2,14 @@
 <head>
 </head>
 <body>
-<main style="display: flex;"><textarea style="box-shadow: 0 0 0px 1px black; border-width: 0px;"></textarea><div style="float:right;     margin-inline-start: 4px;"></div></main>
+<main style="display: flex;"><textarea style="box-shadow: 0 0 0px 1px black; border-width: 0px; width:50%;"></textarea><div style="float:right; margin-inline-start: 4px;  width:50%;"></div></main>
 <script>
 function resize(el,ceil){
-el.style.width=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
+el.style.maxWidth=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
 el.style.height=Math.max(window.innerHeight,el.scrollHeight);
 
 document.body.onresize=function(){
-el.style.width=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
+el.style.maxWidth=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
 }
 }
 
