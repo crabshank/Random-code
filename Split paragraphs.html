@@ -2,8 +2,16 @@
 <head>
 </head>
 <body>
-<main style="display: flex;"><textarea style="box-shadow: 0 0 0px 1px black; border-width: 0px; width:50%;"></textarea><div style="float:right; margin-inline-start: 4px;  width:50%;"></div></main>
+<h1 style="text-align: center;">Split text</h1>
+</textarea><input type="checkbox" style="margin-left: 50%;">Split by word (space)</input>
+<main style="display: flex;">
+<textarea style="box-shadow: 0 0 0px 1px black; border-width: 0px; width:50%;"></textarea>
+<div style="float:right; margin-inline-start: 4px;  width:50%;"></div>
+</main>
 <script>
+
+var p_cnt=1;
+
 function resize(el,ceil){
 el.style.maxWidth=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
 el.style.height=Math.max(window.innerHeight,el.scrollHeight);
@@ -12,6 +20,13 @@ document.body.onresize=function(){
 el.style.maxWidth=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
 }
 }
+
+var pSpl='';
+var wrdSpl='';
+
+wdSpl=document.getElementsByTagName("input")[0];
+
+
 
 ebd=document.getElementsByTagName("textarea")[0];
 resize(ebd,0);
@@ -56,11 +71,11 @@ function changer(){
 ebd.style.height = 'inherit';
 ebd.style.height = (dv.scrollHeight+2)+"px";
 dv.innerText=ebd.value;
-
+p_cnt=1;
 if(ebd.value!=''){
 let itd=ebd.value.split('\n');
-console.log(itd);
-dv.innerText='¶\n';
+dv.innerText='¶{'+p_cnt+'} \n';
+p_cnt++;
 let first = -1;
 
 for (let k = 0; k < itd.length; k++) {
@@ -83,7 +98,8 @@ function brk(ln){
 for (let k = 0; k < itd.length; k++) {		
 	if(k<itd.length-1){
 	if ((itd[k].split(' ').join('')=="")&&!(itd[k+1].split(' ').join('')=="")&&(k>=first)){
-	itd[k]='⁋\n\n¶'
+	itd[k]='⁋\n\n¶{'+p_cnt+'}';
+	p_cnt++;
 	}else{
 	itd[k]=brk(itd[k]);
 	}
@@ -95,12 +111,27 @@ dv.innerText+=itd.join('\n');
 dv.innerText+='\n⁋';
 
 }
+pSpl=dv.innerText;
+wrdSpl=pSpl.split('\n').join('\n\n');
+for (let k = 1; k <=p_cnt ; k++) {	
+wrdSpl=wrdSpl.split('¶{'+k+'}\n\n').join('¶{'+k+'}\n');
+}
+wrdSpl=wrdSpl.split('\n\n⁋').join('\n⁋').split('⁋\n\n\n\n¶').join('⁋\n\n\n\¶').split(' ').join('\n');
+dv.innerText=(!wdSpl.checked)?pSpl:wrdSpl;
 }
 ebd.oninput=function(){
 changer();
 }
 ebd.onchange=function(){
 changer();
+}
+
+wdSpl.oninput=function(){
+	if (!wdSpl.checked){
+		dv.innerText=pSpl;
+	}else{
+		dv.innerText=wrdSpl;
+	}
 }
 
 </script>
