@@ -2,6 +2,14 @@
 <head>
 </head>
 <body>
+<style>
+div > section{
+display:inline;
+}
+div > section:hover{
+background-color: hsl(35,100%,42%);
+}
+</style>
 <h1 style="text-align: center;">Split text</h1>
 </textarea><input type="checkbox" style="margin-left: 50%;">Split by word (space)</input>
 <main style="display: flex;">
@@ -45,7 +53,7 @@ function attached_chars(c,str,n){
 let ln='';
 
 for (let i = 0; i < n; i++){
-ln+='\n';
+ln+='<br>';
 }
 
 
@@ -71,13 +79,14 @@ for (let i = 0; i < sbs.length-1; i++) {
 }
 
 function changer(){
+let tmp='';
 ebd.style.height = 'inherit';
 ebd.style.height = (dv.scrollHeight+2)+"px";
-dv.innerText=ebd.value;
+dv.innerHTML=ebd.value;
 p_cnt=1;
 if(ebd.value!=''){
 let itd=ebd.value.split('\n');
-dv.innerText='¶{'+p_cnt+'} \n';
+tmp='¶{'+p_cnt+'}<section><br>';
 p_cnt++;
 let first = -1;
 
@@ -101,7 +110,7 @@ function brk(ln){
 for (let k = 0; k < itd.length; k++) {		
 	if(k<itd.length-1){
 	if ((itd[k].split(' ').join('')=="")&&!(itd[k+1].split(' ').join('')=="")&&(k>=first)){
-	itd[k]='⁋\n\n¶{'+p_cnt+'}';
+	itd[k]='</section>⁋<br><br>¶{'+p_cnt+'}<section>';
 	p_cnt++;
 	}else{
 	itd[k]=brk(itd[k]);
@@ -110,17 +119,18 @@ for (let k = 0; k < itd.length; k++) {
 	itd[k]=brk(itd[k]);		
 	}
 }
-dv.innerText+=itd.join('\n');
-dv.innerText+='\n⁋';
+tmp+=itd.join('<br>');
+tmp+='<br></section>⁋';
+
 
 }
-pSpl=dv.innerText;
-wrdSpl=pSpl.split('\n').join('\n\n');
+pSpl=tmp;
+wrdSpl=pSpl.split('<br>').join('<br><br>');
 for (let k = 1; k <=p_cnt ; k++) {	
-wrdSpl=wrdSpl.split('¶{'+k+'}\n\n').join('¶{'+k+'}\n');
+wrdSpl=wrdSpl.split('¶{'+k+'}<section><br><br>').join('¶{'+k+'}<section><br>');
 }
-wrdSpl=wrdSpl.split('\n\n⁋').join('\n⁋').split('⁋\n\n\n\n¶').join('⁋\n\n\n\¶').split(' ').join('\n');
-dv.innerText=(!wdSpl.checked)?pSpl:wrdSpl;
+wrdSpl=wrdSpl.split('<br><br></section>⁋').join('<br></section>⁋').split('</section>⁋<br><br><br><br>¶').join('</section>⁋<br><br><br>\¶').split(' ').join('<br>');
+dv.innerHTML=(!wdSpl.checked)?tmp:wrdSpl;
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
 }
 ebd.oninput=function(){
@@ -131,7 +141,7 @@ changer();
 }
 
 wdSpl.oninput=function(){
-dv.innerText=(!wdSpl.checked)?pSpl:wrdSpl;
+dv.innerHTML=(!wdSpl.checked)?pSpl:wrdSpl;
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
 }
 
