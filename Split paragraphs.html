@@ -29,10 +29,13 @@ wdSpl=document.getElementsByTagName("input")[0];
 
 
 ebd=document.getElementsByTagName("textarea")[0];
-resize(ebd,0);
-
 dv=document.getElementsByTagName("div")[0];
+var gFontSize=window.getComputedStyle(dv, null).getPropertyValue('font-size');
+ebd.style.fontSize=gFontSize;
+
+resize(ebd,0);
 resize(dv,1);
+
 dv.oninput=function () {
 dv.style.height = 'inherit';
 dv.style.height = (dv.scrollHeight+2)+"px";
@@ -118,6 +121,7 @@ wrdSpl=wrdSpl.split('¶{'+k+'}\n\n').join('¶{'+k+'}\n');
 }
 wrdSpl=wrdSpl.split('\n\n⁋').join('\n⁋').split('⁋\n\n\n\n¶').join('⁋\n\n\n\¶').split(' ').join('\n');
 dv.innerText=(!wdSpl.checked)?pSpl:wrdSpl;
+dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
 }
 ebd.oninput=function(){
 changer();
@@ -127,11 +131,8 @@ changer();
 }
 
 wdSpl.oninput=function(){
-	if (!wdSpl.checked){
-		dv.innerText=pSpl;
-	}else{
-		dv.innerText=wrdSpl;
-	}
+dv.innerText=(!wdSpl.checked)?pSpl:wrdSpl;
+dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
 }
 
 </script>
