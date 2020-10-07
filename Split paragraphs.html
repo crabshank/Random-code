@@ -193,6 +193,8 @@ for (let k = 1; k <=p_cnt ; k++) {
 wrdSpl=wrdSpl.split('¶{'+k+'}<section><br><br>').join('¶{'+k+'}<section><br>');
 }
 wrdSpl=wrdSpl.split('<br><br></section>⁋').join('<br></section>⁋');
+wrdSpl=wrdSpl.split('⁋<br><br><br><br>¶{').join('⁋<br><br><br>¶{');
+
 dv.innerHTML=(!wdSpl.checked)?pSpl:wrdSpl;
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
 }
