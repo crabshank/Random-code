@@ -49,6 +49,13 @@ dv.oninput=function () {
 dv.style.height = 'inherit';
 dv.style.height = (dv.scrollHeight+2)+"px";
 }
+function retain_spl_arr(s,c){
+var sa= s.split(c);
+for (let i= sa.length; i-->1;){
+    sa.splice(i, 0, c);
+}
+return sa;
+}
 
 function attached_chars(c,str,n){
 let ln='';
@@ -57,37 +64,90 @@ for (let i = 0; i < n; i++){
 ln+='<br>';
 }
 
+var spl=retain_spl_arr(str,' ');
+
+for (let i=1; i<spl.length-1; i++){
+  if((spl[i]==' ')&&(spl[i-1].includes(c))){
+    spl[i-1]+=ln;
+  }
+}
+
+let t=spl.length-1;
+
+if(spl[t].includes(c)){
+  spl[t]+=ln;
+}
+
+return spl.join('');
+}
+
+function add_rpt(str,sbs,n){
+ 
+  var spl=retain_spl_arr(str,sbs);
+  var occ=[];
+  
+  for (let i = 0; i < spl.length; i++){
+    if(spl[i]==sbs){
+      occ.push(i);
+    }
+  }
+  
+  var run = 1;
+  var rem=[];
+  
+for (let k= 0; k < occ.length-1; k++){
+  if(occ[k+1]==occ[k]+1){
+    run++;
+	if (k==occ.length-2){rem.push([occ[k+1],run]);}
+  }else{
+	rem.push([occ[k],run]);
+	if (k==occ.length-2){rem.push([occ[k+1],1]);}
+	run=1;
+}
+}
 
 
-var sbs= str.split(c);
-for (let i= sbs.length; i-->1;){
-    sbs.splice(i, 0, c);
+var exempt=[];
+var outp=[];
+
+for (let i= 0; i < rem.length; i++){
+  if(n<0){
+    let m=Math.min(Math.abs(n),rem[i][1]);
+    for (let k=0; k<m;k++){
+      if(rem[i][0]-k>=0){
+        exempt.push(rem[i][0]-k);
+      }
+    }
+  }else{
+   let ln='';
+for (let p = 0; p<n; p++){
+ln+=sbs;
 }
-for (let i = 0; i < sbs.length-1; i++) {
-   if(sbs[i]==c){
-   let spr=[...sbs[i+1]];
-	   for (let k = 0; k < spr.length; k++) {
-		   if(spr[k]==" "){
-		   spr[k]=ln+spr[k];
-		   k=spr.length-1;
-		   }
-	   }
-	   sbs[i+1]=spr.join('');
-	   i=i+1;
-   }
+spl[rem[i][0]]+=ln;
+  }
 }
-		return sbs.join('');
+
+if (n<0){
+  for (let i= 0; i < spl.length; i++){
+    if(!(exempt.includes(i))){
+      outp.push(spl[i]);
+    }
+  }
+  return outp.join('');
+}else{
+  return spl.join('');
+}
+
 }
 
 function changer(){
-let tmp='';
 ebd.style.height = 'inherit';
 ebd.style.height = (dv.scrollHeight+2)+"px";
 dv.innerHTML=ebd.value;
 p_cnt=1;
 if(ebd.value!=''){
 let itd=ebd.value.split('\n');
-tmp='¶{'+p_cnt+'}<section><br>';
+pSpl='¶{'+p_cnt+'}<section><br>';
 p_cnt++;
 let first = -1;
 
@@ -120,18 +180,19 @@ for (let k = 0; k < itd.length; k++) {
 	itd[k]=brk(itd[k]);		
 	}
 }
-tmp+=itd.join('<br>');
-tmp+='<br></section>⁋';
+pSpl+=itd.join('<br>');
+pSpl+='<br></section>⁋';
 
 
 }
-pSpl=tmp;
-wrdSpl=pSpl.split('<br>').join('<br><br>');
+
+wrdSpl=add_rpt(pSpl,'<br>',1);
+wrdSpl=wrdSpl.split(' ').join('<br>');
 for (let k = 1; k <=p_cnt ; k++) {	
 wrdSpl=wrdSpl.split('¶{'+k+'}<section><br><br>').join('¶{'+k+'}<section><br>');
 }
-wrdSpl=wrdSpl.split('<br><br></section>⁋').join('<br></section>⁋').split('</section>⁋<br><br><br><br>¶').join('</section>⁋<br><br><br>\¶').split(' ').join('<br>');
-dv.innerHTML=(!wdSpl.checked)?tmp:wrdSpl;
+wrdSpl=wrdSpl.split('<br><br></section>⁋<br><br><br><br>').join('<br></section>⁋<br><br>');
+dv.innerHTML=(!wdSpl.checked)?pSpl:wrdSpl;
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
 }
 ebd.oninput=function(){
