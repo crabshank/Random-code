@@ -183,7 +183,8 @@ for (let k = 0; k < itd.length; k++) {
 pSpl+=itd.join('<br>');
 pSpl+='<br></section>⁋';
 
-
+pSpl=pSpl.split('<br><br><br></section>⁋').join('<br></section>⁋');
+pSpl=pSpl.split('<br><br></section>⁋').join('<br></section>⁋');
 }
 
 wrdSpl=add_rpt(pSpl,'<br>',1);
@@ -191,7 +192,7 @@ wrdSpl=wrdSpl.split(' ').join('<br>');
 for (let k = 1; k <=p_cnt ; k++) {	
 wrdSpl=wrdSpl.split('¶{'+k+'}<section><br><br>').join('¶{'+k+'}<section><br>');
 }
-wrdSpl=wrdSpl.split('<br><br></section>⁋<br><br><br><br>').join('<br></section>⁋<br><br>');
+wrdSpl=wrdSpl.split('<br><br></section>⁋').join('<br></section>⁋');
 dv.innerHTML=(!wdSpl.checked)?pSpl:wrdSpl;
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
 }
