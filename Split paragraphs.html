@@ -196,7 +196,7 @@ for (let k = 0; k <pSpl_arr.length ; k++) {
 }
 pSpl=pSpl_arr.join('');
 
-}
+
 wrdSpl=pSpl.split('<section>').join('');
 wrdSpl=wrdSpl.split('</section>').join('');
 
@@ -216,6 +216,9 @@ for (let k = 0; k <wrdSpl_arr.length ; k++) {
 }
 wrdSpl=wrdSpl_arr.join('');
 dv.innerHTML=(!wdSpl.checked)?pSpl:wrdSpl;
+}else{
+dv.innerHTML='';
+}
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
 }
 ebd.oninput=function(){
