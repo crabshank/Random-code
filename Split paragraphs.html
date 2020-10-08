@@ -190,7 +190,7 @@ pSpl=pSpl.split('<br><br>⁋').join('<br>⁋');
 let pSpl_arr=retain_spl_arr(pSpl,'<br>');
 
 for (let k = 0; k <pSpl_arr.length ; k++) {
-	if ((pSpl_arr[k]!='<br>')&&(!pSpl_arr[k].startsWith('¶{'))&&(pSpl_arr[k]!='⁋')){
+	if ((pSpl_arr[k]!='<br>')&&(!((pSpl_arr[k].startsWith('¶{'))&&(pSpl_arr[k].endsWith('}'))))&&(pSpl_arr[k]!='⁋')){
 	pSpl_arr[k]='<section>'+pSpl_arr[k]+'</section>';
 	}
 }
@@ -210,7 +210,7 @@ wrdSpl=wrdSpl.split('⁋<br><br><br><br>¶{').join('⁋<br><br><br>¶{');
 let wrdSpl_arr=retain_spl_arr(wrdSpl,'<br>');
 
 for (let k = 0; k <wrdSpl_arr.length ; k++) {
-	if ((wrdSpl_arr[k]!='<br>')&&(!wrdSpl_arr[k].startsWith('¶{'))&&(wrdSpl_arr[k]!='⁋')){
+	if ((wrdSpl_arr[k]!='<br>')&&(!((wrdSpl_arr[k].startsWith('¶{'))&&(wrdSpl_arr[k].endsWith('}'))))&&(wrdSpl_arr[k]!='⁋')){
 	wrdSpl_arr[k]='<section>'+wrdSpl_arr[k]+'</section>';
 	}
 }
