@@ -67,27 +67,31 @@ return sb;
 function attached_chars(c,str,n){
 let ln='';
 
-if (n>1){
-	for (let i = 0; i < n-1; i++){
+
+	for (let i = 0; i < n; i++){
 	ln+='<br>';
 	}
-}else{
-	ln='<br>';
-}
-console.log(str);
+
+
 var spl=retain_spl_arr(str,' ');
-console.log(spl);
+
 for (let i=1; i<spl.length-1; i++){
 if((spl[i]==' ')&&(spl[i-1].includes(c))){
 spl[i-1]+=ln;
 }
 }
 
+
 let t=spl.length-1;
 
 if(spl[t].includes(c)){
+let ln='';
+	for (let i = 0; i < n-1; i++){
+	ln+='<br>';
+	}
 spl[t]+=ln;
 }
+
 
 return spl.join('');
 }
