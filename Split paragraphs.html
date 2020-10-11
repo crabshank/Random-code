@@ -6,6 +6,7 @@
 <style>
 div > section{
 display:inline;
+padding-right: 100%;
 }
 div > section:hover{
 border-right: 0.34ch dotted transparent;
@@ -161,7 +162,7 @@ ebd.style.height = (dv.scrollHeight+2)+"px";
 dv.innerHTML=ebd.value;
 p_cnt=1;
 if(ebd.value!=''){
-let itd=retain_spl_arr(ebd.value,'\n');
+let itd=retain_spl_arr(ebd.value.trim(),'\n');
 for (let k= 0; k < itd.length; k++){
 if (itd[k]=='\n'){
 itd[k]='<br>';
