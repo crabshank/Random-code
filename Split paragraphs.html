@@ -55,28 +55,38 @@ var sa= s.split(c);
 for (let i= sa.length; i-->1;){
     sa.splice(i, 0, c);
 }
-return sa;
+var sb=[];
+for (let k= 0; k < sa.length; k++){
+if(sa[k]!=''){
+sb.push(sa[k]);
+}
+}
+return sb;
 }
 
 function attached_chars(c,str,n){
 let ln='';
 
-for (let i = 0; i < n; i++){
-ln+='<br>';
+if (n>1){
+	for (let i = 0; i < n-1; i++){
+	ln+='<br>';
+	}
+}else{
+	ln='<br>';
 }
 
 var spl=retain_spl_arr(str,' ');
 
 for (let i=1; i<spl.length-1; i++){
-  if((spl[i]==' ')&&(spl[i-1].includes(c))){
-    spl[i-1]+=ln;
-  }
+if((spl[i]==' ')&&(spl[i-1].includes(c))){
+spl[i-1]+=ln;
+}
 }
 
 let t=spl.length-1;
 
 if(spl[t].includes(c)){
-  spl[t]+=ln;
+spl[t]+=ln;
 }
 
 return spl.join('');
@@ -190,7 +200,7 @@ pSpl=pSpl.split('<br><br>⁋').join('<br>⁋');
 let pSpl_arr=retain_spl_arr(pSpl,'<br>');
 
 for (let k = 0; k <pSpl_arr.length ; k++) {
-	if ((pSpl_arr[k]!='<br>')&&(!((pSpl_arr[k].startsWith('¶{'))&&(pSpl_arr[k].endsWith('}'))))&&(pSpl_arr[k]!='⁋')){
+	if ((pSpl_arr[k]!='')&&(pSpl_arr[k]!='<br>')&&(!((pSpl_arr[k].startsWith('¶{'))&&(pSpl_arr[k].endsWith('}'))))&&(pSpl_arr[k]!='⁋')){
 	pSpl_arr[k]='<section>'+pSpl_arr[k]+'</section>';
 	}
 }
@@ -210,7 +220,7 @@ wrdSpl=wrdSpl.split('⁋<br><br><br><br>¶{').join('⁋<br><br><br>¶{');
 let wrdSpl_arr=retain_spl_arr(wrdSpl,'<br>');
 
 for (let k = 0; k <wrdSpl_arr.length ; k++) {
-	if ((wrdSpl_arr[k]!='<br>')&&(!((wrdSpl_arr[k].startsWith('¶{'))&&(wrdSpl_arr[k].endsWith('}'))))&&(wrdSpl_arr[k]!='⁋')){
+	if ((wrdSpl_arr[k]!='')&&(wrdSpl_arr[k]!='<br>')&&(!((wrdSpl_arr[k].startsWith('¶{'))&&(wrdSpl_arr[k].endsWith('}'))))&&(wrdSpl_arr[k]!='⁋')){
 	wrdSpl_arr[k]='<section>'+wrdSpl_arr[k]+'</section>';
 	}
 }
