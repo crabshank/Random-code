@@ -74,9 +74,9 @@ if (n>1){
 }else{
 	ln='<br>';
 }
-
+console.log(str);
 var spl=retain_spl_arr(str,' ');
-
+console.log(spl);
 for (let i=1; i<spl.length-1; i++){
 if((spl[i]==' ')&&(spl[i-1].includes(c))){
 spl[i-1]+=ln;
@@ -157,17 +157,15 @@ ebd.style.height = (dv.scrollHeight+2)+"px";
 dv.innerHTML=ebd.value;
 p_cnt=1;
 if(ebd.value!=''){
-let itd=ebd.value.split('\n');
+let itd=retain_spl_arr(ebd.value,'\n');
+for (let k= 0; k < itd.length; k++){
+if (itd[k]=='\n'){
+itd[k]='<br>';
+}
+}
 pSpl='¶{'+p_cnt+'}<br>';
 p_cnt++;
-let first = -1;
 
-for (let k = 0; k < itd.length; k++) {
-if (!(itd[k].split(' ').join('')=="")){
-first=k;
-break;
-}
-}
 
 function brk(ln){
 	ln=attached_chars('.',ln,2);
@@ -181,8 +179,8 @@ function brk(ln){
 
 for (let k = 0; k < itd.length; k++) {		
 	if(k<itd.length-1){
-	if ((itd[k].split(' ').join('')=="")&&!(itd[k+1].split(' ').join('')=="")&&(k>=first)){
-	itd[k]='⁋<br><br>¶{'+p_cnt+'}';
+	if ((itd[k]=='<br>')&&(itd[k+1]=='<br>')){
+	itd[k]='<br>⁋<br><br>¶{'+p_cnt+'}';
 	p_cnt++;
 	}else{
 	itd[k]=brk(itd[k]);
@@ -191,7 +189,8 @@ for (let k = 0; k < itd.length; k++) {
 	itd[k]=brk(itd[k]);		
 	}
 }
-pSpl+=itd.join('<br>');
+
+pSpl+=itd.join('');
 pSpl+='<br>⁋';
 
 pSpl=pSpl.split('<br><br><br>⁋').join('<br>⁋');
@@ -200,12 +199,11 @@ pSpl=pSpl.split('<br><br>⁋').join('<br>⁋');
 let pSpl_arr=retain_spl_arr(pSpl,'<br>');
 
 for (let k = 0; k <pSpl_arr.length ; k++) {
-	if ((pSpl_arr[k]!='')&&(pSpl_arr[k]!='<br>')&&(!((pSpl_arr[k].startsWith('¶{'))&&(pSpl_arr[k].endsWith('}'))))&&(pSpl_arr[k]!='⁋')){
-	pSpl_arr[k]='<section>'+pSpl_arr[k]+'</section>';
+	if ((pSpl_arr[k]!='<br>')&&(!((pSpl_arr[k].startsWith('¶{'))&&(pSpl_arr[k].endsWith('}'))))&&(pSpl_arr[k]!='⁋')){
+	pSpl_arr[k]='<section>'+pSpl_arr[k].trim()+'</section>';
 	}
 }
 pSpl=pSpl_arr.join('');
-
 
 wrdSpl=pSpl.split('<section>').join('');
 wrdSpl=wrdSpl.split('</section>').join('');
@@ -220,7 +218,7 @@ wrdSpl=wrdSpl.split('⁋<br><br><br><br>¶{').join('⁋<br><br><br>¶{');
 let wrdSpl_arr=retain_spl_arr(wrdSpl,'<br>');
 
 for (let k = 0; k <wrdSpl_arr.length ; k++) {
-	if ((wrdSpl_arr[k]!='')&&(wrdSpl_arr[k]!='<br>')&&(!((wrdSpl_arr[k].startsWith('¶{'))&&(wrdSpl_arr[k].endsWith('}'))))&&(wrdSpl_arr[k]!='⁋')){
+	if ((wrdSpl_arr[k]!='<br>')&&(!((wrdSpl_arr[k].startsWith('¶{'))&&(wrdSpl_arr[k].endsWith('}'))))&&(wrdSpl_arr[k]!='⁋')){
 	wrdSpl_arr[k]='<section>'+wrdSpl_arr[k]+'</section>';
 	}
 }
