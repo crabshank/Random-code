@@ -4,8 +4,8 @@
 </head>
 
 <body>
-<h1 style="text-align: center">Multiple iframes per page (input src into text field)</h1>
-<section style="display: list-item !important;"><button style="background-color: buttonface !important;" type="button">Clear</button><input style="width: 95% !important; background-color: buttonface !important;" type="text"></input><iframe style="width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important"></iframe><br><br></section>
+<h1 style="text-align: center">Multiple iframes per page</h1>
+<section style="display: list-item !important;"><button style="background-color: buttonface !important;" type="button">Clear</button><input style="width: 95% !important; background-color: buttonface !important;" type="text"></input><iframe style="width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important; height: -webkit-fill-available !important;"></iframe><br><br></section>
 
 <script>
 let sct=[...document.getElementsByTagName('SECTION')];
@@ -18,7 +18,7 @@ let sct2=[...document.getElementsByTagName('SECTION')];
 	if (((u.value!="")&&(sct2.length==1))||((u.value!="")&&(init!=1)&&(sct2.length>1))){
 	let sc=document.createElement('section');
 	sc.style.cssText='display: list-item !important;';
-	sc.innerHTML='<button style="background-color: buttonface !important;" type="button">Clear</button><input style="width: 95% !important; background-color: buttonface !important;" type="text"></input><iframe style="width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important"></iframe><br><br>';
+	sc.innerHTML='<button style="background-color: buttonface !important;" type="button">Clear</button><input style="width: 95% !important; background-color: buttonface !important;" type="text"></input><iframe style="width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important; height: -webkit-fill-available !important;""></iframe><br><br>';
 	sci.insertAdjacentElement('afterend', sc);
 	sc.children[0].onclick=function(){
 	sc.children[1].value="";
