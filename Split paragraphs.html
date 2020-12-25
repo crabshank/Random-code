@@ -174,11 +174,26 @@ p_cnt++;
 
 function brk(ln){
 	ln=attached_chars('.',ln,2);
+	ln=attached_chars('。',ln,2);
+	ln=attached_chars('︒',ln,2);
 	ln=attached_chars('?',ln,2);
+	ln=attached_chars('؟',ln,2);
+	ln=attached_chars('‽',ln,2);
+	ln=attached_chars('？',ln,2);
+	ln=attached_chars('՞',ln,2);
 	ln=attached_chars('!',ln,2);
+	ln=attached_chars('~',ln,2);
+	ln=attached_chars('！',ln,2);
 	ln=attached_chars(':',ln,1);
+	ln=attached_chars('：',ln,1);
 	ln=attached_chars(';',ln,1);
+	ln=attached_chars('；',ln,1);
+	ln=attached_chars('·',ln,1);
+	ln=attached_chars('჻',ln,1);
 	ln=attached_chars(',',ln,1);
+	ln=attached_chars('，',ln,1);
+	ln=attached_chars('、',ln,1);
+	ln=attached_chars('،',ln,1);
 	return ln;
 }
 
