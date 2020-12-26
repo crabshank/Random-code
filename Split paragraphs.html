@@ -65,7 +65,7 @@ sb.push(sa[k]);
 return sb;
 }
 
-function attached_chars(c,str,n){
+function attached_chars(c,str,n,f){
 let ln='';
 
 
@@ -76,26 +76,42 @@ let ln='';
 
 var spl=retain_spl_arr(str,' ');
 
-for (let i=1; i<spl.length-1; i++){
-if((spl[i]==' ')&&(spl[i-1].includes(c))){
-spl[i-1]+=ln;
-}
-}
-
-
-let t=spl.length-1;
-
-if(spl[t].includes(c)){
-let ln='';
-	for (let i = 0; i < n-1; i++){
-	ln+='<br>';
+if (!f){
+	for (let i=spl.length-2; i>0; i--){
+	if((spl[i]==' ')&&(spl[i+1].includes(c))){
+	spl[i+1]=ln+spl[i+1];
 	}
-spl[t]+=ln;
+	}
+
+	if(spl[0].includes(c)){
+	let ln='';
+		for (let i = 0; i < n-1; i++){
+		ln+='<br>';
+		}
+	spl[0]=ln+spl[0];
+	}
+}else{
+	for (let i=1; i<spl.length-1; i++){
+	if((spl[i]==' ')&&(spl[i-1].includes(c))){
+	spl[i-1]+=ln;
+	}
+	}
+
+	let t=spl.length-1;
+
+	if(spl[t].includes(c)){
+	let ln='';
+		for (let i = 0; i < n-1; i++){
+		ln+='<br>';
+		}
+	spl[t]+=ln;
+	}
 }
 
 
 return spl.join('');
 }
+
 
 function add_rpt(str,sbs,n){
  
@@ -173,27 +189,30 @@ p_cnt++;
 
 
 function brk(ln){
-	ln=attached_chars('.',ln,2);
-	ln=attached_chars('。',ln,2);
-	ln=attached_chars('︒',ln,2);
-	ln=attached_chars('?',ln,2);
-	ln=attached_chars('؟',ln,2);
-	ln=attached_chars('‽',ln,2);
-	ln=attached_chars('？',ln,2);
-	ln=attached_chars('՞',ln,2);
-	ln=attached_chars('!',ln,2);
-	ln=attached_chars('~',ln,2);
-	ln=attached_chars('！',ln,2);
-	ln=attached_chars(':',ln,1);
-	ln=attached_chars('：',ln,1);
-	ln=attached_chars(';',ln,1);
-	ln=attached_chars('；',ln,1);
-	ln=attached_chars('·',ln,1);
-	ln=attached_chars('჻',ln,1);
-	ln=attached_chars(',',ln,1);
-	ln=attached_chars('，',ln,1);
-	ln=attached_chars('、',ln,1);
-	ln=attached_chars('،',ln,1);
+	ln=attached_chars('.',ln,2,true);
+	ln=attached_chars('。',ln,2,true);
+	ln=attached_chars('︒',ln,2,true);
+	ln=attached_chars('?',ln,2,true);
+	ln=attached_chars('؟',ln,2,true);
+	ln=attached_chars('‽',ln,2,true);
+	ln=attached_chars('？',ln,2,true);
+	ln=attached_chars('¡',ln,2,false);
+	ln=attached_chars('¿',ln,2,false);
+	ln=attached_chars('⸘',ln,2,false);
+	ln=attached_chars('՞',ln,2,true);
+	ln=attached_chars('!',ln,2,true);
+	ln=attached_chars('~',ln,2,true);
+	ln=attached_chars('！',ln,2,true);
+	ln=attached_chars(':',ln,1,true);
+	ln=attached_chars('：',ln,1,true);
+	ln=attached_chars(';',ln,1,true);
+	ln=attached_chars('；',ln,1,true);
+	ln=attached_chars('·',ln,1,true);
+	ln=attached_chars('჻',ln,1,true);
+	ln=attached_chars(',',ln,1,true);
+	ln=attached_chars('，',ln,1,true);
+	ln=attached_chars('、',ln,1,true);
+	ln=attached_chars('،',ln,1,true);
 	return ln;
 }
 
