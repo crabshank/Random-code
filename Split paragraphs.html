@@ -21,7 +21,7 @@ background-color: hsl(35,100%,42%);
 <div style="float:right; margin-inline-start: 4px;  width:50%;"></div>
 </main>
 <script>
-
+var last='';
 var p_cnt=1;
 
 function resize(el,ceil){
@@ -267,13 +267,16 @@ dv.innerHTML=(!wdSpl.checked)?pSpl:wrdSpl;
 }else{
 dv.innerHTML='';
 }
+last=ebd.value;
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
 }
 ebd.oninput=function(){
 changer();
 }
 ebd.onchange=function(){
+if(last!=ebd.value){
 changer();
+}
 }
 
 wdSpl.oninput=function(){
