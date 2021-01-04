@@ -326,28 +326,30 @@ splt.push(opns[k]);
 }
 }
 
-
+let cs=0;
 for (let k =0; k<splt.length; k++) {
 if (splt[k]==opn){
-if (k>0){
+if (k>0 && cs==0){
 let b=retain_spl_arr(splt[k-1],'<section>');
 for (let j=b.length-1; j>=0; j--) {
 if(b[j]=='<section>'){
 b[j]='<section class="quote" style="text-align: center;">';
+cs=(cs==1)?0:1;
 j=0;
 }
 }
 splt[k-1]=b.join('');
 }
 
-if (splt[k+2]==cls){
+if (splt[k+2]==cls && cs==1){
 splt[k+1]=splt[k+1].split('<section>').join('<section class="quote" style="text-align: center;">');
+cs=(cs==1)?0:1;
 k++;
 }
 }
 }
 
-console.log(splt);
+//console.log(splt);
 
 if(pw==1){
 c_wrdSplSpl=splt.join('');
