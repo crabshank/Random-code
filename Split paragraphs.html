@@ -5,17 +5,23 @@
 <body>
 <title>Split paragraphs</title>
 <style>
-div > section{
-display:inline-block;
-width: 100%;
-}
-div > section:hover{
+div > section:hover {
 border-right: 0.34ch dotted transparent;
-background-color: hsl(35,100%,42%);
+background-color: hsl(46deg 90% 28%);
+}
+
+div > section {
+display: inline-block;
+width: 100%;
+color: white;
+}
+body, textarea {
+background-color: hsl(0 0% 8% / 1);
 }
 </style>
-<h1 style="text-align: center;">Split text</h1>
-<input type="checkbox" style="margin-left: 50%;">Split by word (space)</input>
+<h1 style="text-align: center; margin-bottom: 1.1%;">Split text</h1>
+<input type="checkbox" style="margin-left: 50%;">Split by word (space)</input><br>
+<label for="quotes" style="margin-left: 50%;">Select quotation mark type: </label><select id="quotes" style="color: black; background-color: buttonface;"></select>
 <main style="display: flex;">
 <textarea style="box-shadow: 0 0 0px 1px black; border-width: 0px; width:50%;"></textarea>
 <div style="float:right; margin-inline-start: 4px;  width:50%;"></div>
@@ -35,9 +41,22 @@ el.style.maxWidth=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(
 
 var pSpl='';
 var wrdSpl='';
+var c_pSpl='';
+var c_wrdSpl='';
 
 wdSpl=document.getElementsByTagName("input")[0];
+slq=document.getElementById("quotes");
+  var marks = [[],['"','"'],['“','”'],["‘", "’"],["’","’"],["‚","’"]	,['„','“'],['«','»'],['»','«'],['《','》'],['‹','›'],['›','‹'],['「','」'],['『','』']];
 
+  // Loop through voices and create an option for each one
+  marks.forEach(mark => {
+    // Create option element
+    let opt = document.createElement('option');
+	opt.style.cssText='color: black;';
+    opt.textContent = mark.join('…');
+
+    slq.appendChild(opt);
+  });
 
 
 ebd=document.getElementsByTagName("textarea")[0];
@@ -269,6 +288,88 @@ dv.innerHTML='';
 }
 last=ebd.value;
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
+
+
+  
+  let op=[...slq.getElementsByTagName('OPTION')];
+  
+  for (let k = 1; k <op.length ; k++) {
+    op[k].textContent =marks[k].join('…')+ ' ('+((ebd.value.split(marks[k][0]).length-1)+((ebd.value.split(marks[k][1]).length-1)))+')';
+  }
+
+if(!wdSpl.checked){
+cenSpeech(pSpl,0);
+}else{
+cenSpeech(wrdSpl,1);
+}
+
+}
+
+
+function cenSpeech(spl,pw){
+if (slq.selectedIndex!=0){
+dv.innerHTML='';
+let opn=marks[slq.selectedIndex][0];
+let cls=marks[slq.selectedIndex][1];
+
+let opns=retain_spl_arr(spl,opn);
+let splt=[];
+
+for (let k =0; k< opns.length; k++) {
+if (opns[k]!=opn){
+let s=retain_spl_arr(opns[k],cls);
+for (let l =0; l< s.length; l++) {
+splt.push(s[l]);
+}
+}else{
+splt.push(opns[k]);
+}
+}
+
+
+for (let k =0; k<splt.length; k++) {
+if (splt[k]==opn){
+if (k>0){
+let b=retain_spl_arr(splt[k-1],'<section>');
+for (let j=b.length-1; j>=0; j--) {
+if(b[j]=='<section>'){
+b[j]='<section class="quote" style="text-align: center;">';
+j=0;
+}
+}
+splt[k-1]=b.join('');
+}
+
+if (splt[k+2]==cls){
+splt[k+1]=splt[k+1].split('<section>').join('<section class="quote" style="text-align: center;">');
+k++;
+}
+}
+}
+
+console.log(splt);
+
+if(pw==1){
+c_wrdSplSpl=splt.join('');
+dv.innerHTML=c_wrdSplSpl;
+}else{
+c_pSpl=splt.join('');
+dv.innerHTML=c_pSpl;
+}
+
+}else{
+dv.innerHTML=spl;
+}
+
+}
+
+slq.onchange=function(){
+slq.blur(); 
+if(!wdSpl.checked){
+cenSpeech(pSpl,0);
+}else{
+cenSpeech(wrdSpl,1);
+}
 }
 ebd.oninput=function(){
 changer();
@@ -280,8 +381,14 @@ changer();
 }
 
 wdSpl.oninput=function(){
-dv.innerHTML=(!wdSpl.checked)?pSpl:wrdSpl;
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
+if(!wdSpl.checked){
+dv.innerHTML=pSpl;
+cenSpeech(pSpl,0);
+}else{
+dv.innerHTML=wrdSpl;
+cenSpeech(wrdSpl,1);
+}
 }
 
 </script>
