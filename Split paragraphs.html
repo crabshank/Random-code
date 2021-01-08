@@ -5,7 +5,7 @@
 <body>
 <title>Split paragraphs</title>
 <style>
-div > section:hover, div > blockquote:hover {
+div > section:hover{
 background-color: hsl(46deg 90% 28%);
 }
 div > section {
@@ -16,14 +16,6 @@ border-right: 0.81ch dotted transparent;
 }
 body, textarea {
 background-color: hsl(0 0% 8% / 1);
-}
-div > blockquote {
-display: block;
-margin-block-start: 0;
-margin-block-end: 0;
-margin-inline-start: 0;
-margin-inline-end: -0.81ch;
-text-align: center;
 }
 </style>
 <h1 style="text-align: center; margin-bottom: 1.1%;">Split text</h1>
@@ -512,13 +504,13 @@ if (splt[trk]=='⁋'){
 	trk++;
 }
 
-splt.join('').split('</blockquote>').join('</section>').split('<blockquote>').join('<section style="text-align: center;">')
+splt=splt.join('').split('</blockquote>').join('</section>').split('<blockquote>').join('<section style="text-align: center;">');
 
 if(pw==1){
-c_wrdSpl=splt.join('');
+c_wrdSpl=splt;
 dv.innerHTML=c_wrdSpl;
 }else{
-c_pSpl=splt.join('');
+c_pSpl=splt;
 dv.innerHTML=c_pSpl;
 }
 
