@@ -5,22 +5,30 @@
 <body>
 <title>Split paragraphs</title>
 <style>
-div > section:hover {
-border-right: 0.34ch dotted transparent;
+div > section:hover, div > blockquote:hover {
 background-color: hsl(46deg 90% 28%);
 }
-
 div > section {
 display: inline-block;
 width: 100%;
 color: white;
+border-right: 0.81ch dotted transparent;
 }
 body, textarea {
 background-color: hsl(0 0% 8% / 1);
 }
+div > blockquote {
+display: block;
+margin-block-start: 0;
+margin-block-end: 0;
+margin-inline-start: 0;
+margin-inline-end: -0.81ch;
+text-align: center;
+}
 </style>
-<h1 style="text-align: center; margin-bottom: 0.5%;">Split text</h1>
-<input type="checkbox" style="margin-left: 50%;">Split by word (space)</input>
+<h1 style="text-align: center; margin-bottom: 1.1%;">Split text</h1>
+<input type="checkbox" style="margin-left: 50%;">Split by word (space)</input><br>
+<label for="quotes" style="margin-left: 50%;">Select quotation mark type: </label><select id="quotes" style="color: black; background-color: buttonface;"></select>
 <main style="display: flex;">
 <textarea style="box-shadow: 0 0 0px 1px black; border-width: 0px; width:50%;"></textarea>
 <div style="float:right; margin-inline-start: 4px;  width:50%;"></div>
@@ -40,9 +48,22 @@ el.style.maxWidth=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(
 
 var pSpl='';
 var wrdSpl='';
+var c_pSpl='';
+var c_wrdSpl='';
 
 wdSpl=document.getElementsByTagName("input")[0];
+slq=document.getElementById("quotes");
+  var marks = [[],['"','"'],['“','”'],["‘", "’"],["'","'"],["’","’"],["‚","’"],['„','“'],['«','»'],['»','«'],['《','》'],['‹','›'],['›','‹'],['「','」'],['『','』']];
 
+  // Loop through voices and create an option for each one
+  marks.forEach(mark => {
+    // Create option element
+    let opt = document.createElement('option');
+	opt.style.cssText='color: black;';
+    opt.textContent = mark.join('…');
+
+    slq.appendChild(opt);
+  });
 
 
 ebd=document.getElementsByTagName("textarea")[0];
@@ -274,6 +295,244 @@ dv.innerHTML='';
 }
 last=ebd.value;
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
+
+  let op=[...slq.getElementsByTagName('OPTION')];
+  
+  let srt=[];
+  for (let k = 1; k <op.length ; k++) {
+  
+		let splt=gen_retain_spl(ebd.value,marks[k]);
+		
+		let st=-1;
+		let trk=0;
+		let mkc=0;
+		while (trk<splt.length) {
+		if(splt[trk]==marks[k][0] &&  st==-1){
+		st=trk;
+		//console.log(trk);
+		}else if(splt[trk]==marks[k][1] && st>=0){
+		mkc++;
+		st=-1;
+		}
+
+		trk++;
+		}
+	
+    op[k].textContent =marks[k].join('…')+ ' ('+mkc+')';
+
+  }
+
+if(!wdSpl.checked){
+cenSpeech(pSpl,0);
+}else{
+cenSpeech(wrdSpl,1);
+}
+
+}
+
+
+function gen_retain_spl(spl, sbs){ //([split] string,array of splitters)
+
+let sp1=retain_spl_arr(spl,sbs[0]);
+let out={soFar:[],last: sp1, curr: sp1};
+
+for (let i =1; i< sbs.length; i++) {
+out.last=out.curr;
+out.curr=[];
+for (let k =0; k< out.last.length; k++) {
+out.soFar.push(sbs[i-1]);
+if (!out.soFar.includes(out.last[k])){
+let s=retain_spl_arr(out.last[k],sbs[i]);
+for (let l =0; l< s.length; l++) {
+out.curr.push(s[l]);
+}
+}else{
+out.curr.push(out.last[k]);
+}
+}
+
+}
+
+return out.curr;
+
+}
+
+
+function cenSpeech(spl,pw){
+if (slq.selectedIndex!=0){
+dv.innerHTML='';
+let opn=marks[slq.selectedIndex][0];
+let cls=marks[slq.selectedIndex][1];
+
+let splt=gen_retain_spl(spl,[opn,cls,'¶{','⁋']);
+
+let st=-1;
+let trk=0;
+let trkP=0;
+while (trk<splt.length) {
+if (trk<splt.length-1){
+if (splt[trk]=='¶{' && splt[trk+1].startsWith((trkP+1)+'}')){
+trkP++;
+}
+}
+
+if(splt[trk]==opn &&  st==-1){
+st=trk;
+//console.log(trk);
+}else if(splt[trk]==cls && st>=0){
+splt[st]='<blockquote>'+splt[st];
+splt[trk]+='</blockquote>';
+let trkP2=trkP;
+for (let k=trk-1; k>st+1; k--) {
+if(splt[k].startsWith(trkP2+'}') && splt[k-1]=='¶{'){
+splt[k]=splt[k].split(trkP2+'}').join(trkP2+'}<blockquote>');
+splt[k-1]='</blockquote>'+splt[k-1];
+trkP2--;
+}else if(splt[k]=='⁋'){
+splt[k]='</blockquote>'+splt[k]+'<blockquote>'
+}
+}
+st=-1;
+}
+
+trk++;
+}
+
+	splt=gen_retain_spl(splt.join(''),['<blockquote>','</blockquote>','<br>']);
+
+	st=-1;
+	trk=0;
+	flag=false;
+	while (trk<splt.length) {
+	if(splt[trk]=='<blockquote>' && st==-1){
+	st=trk;
+	//console.log(trk);
+	}else if(splt[trk]=='</blockquote>' && st>=0){
+	for (let k=st+1; k<trk; k++) {
+	if (splt[k]!='<br>'){
+	flag=true;
+	k=trk-1;
+	}
+	}
+		if(!flag){
+		for (let j=st; j<=trk; j++) {
+		splt[j]='';
+		}
+		}else{
+		
+		for (let s=st+1; s<trk-1; s++) {
+		if (splt[s]=='<br>'&& splt[s+1]!='⁋'){
+		splt[s]='';
+		}else{
+		s=trk-1;
+		}
+		}
+
+		for (let n=trk-2; n>st; n--) {
+		if (splt[n]=='<br>' && splt[n+1]!='⁋'){
+		splt[n]='';
+		}else{
+		n=st-1;
+		}
+		}
+		
+		}
+		
+		
+		
+	st=-1;
+	}
+
+	trk++;
+	}
+	
+	splt=gen_retain_spl(splt.join(''),['<section>','</section>']);
+
+	st=-1;
+	trk=0;
+	while (trk<splt.length) {
+	if(splt[trk]=='<section>' && st==-1){
+	st=trk;
+	//console.log(trk);
+	}else if(splt[trk]=='</section>' && st>=0){
+
+	for (let j=st+1; j<trk; j++){
+	splt[j]=splt[j].split('<blockquote>').join('</section><blockquote>').split('</blockquote>').join('</blockquote><section>');
+	}
+
+	st=-1;
+	}
+
+	trk++;
+	}
+
+splt=splt.join('').split('<section></section>').join('');
+
+splt=gen_retain_spl(splt,['<blockquote>','</blockquote>']);
+st=-1;
+trk=0;
+while (trk<splt.length) {
+if(splt[trk]=='<blockquote>' && st==-1){
+st=trk;
+//console.log(trk);
+}else if(splt[trk]=='</blockquote>' && st>=0){
+
+for (let j=st+1; j<trk; j++){
+splt[j]=splt[j].split('<section>').join('').split('</section>').join('');
+}
+
+st=-1;
+}
+
+trk++;
+}
+
+
+splt=gen_retain_spl(splt.join(''),['</blockquote>','<br>','⁋']);
+st=-1;
+trk=0;
+let bfg=false;
+while (trk<splt.length) {
+if (splt[trk]=='⁋'){
+	for (let i=trk-1; i>=0; i--){
+	if (splt[i]=='<br>'){
+	st=1;
+	}else if(splt[i]=='</blockquote>' && st==1){
+		for (let k=trk-1; k>i; k--){
+			splt[k]='';
+		}
+		i=0;
+		st=-1;
+	}else{
+	i=0;
+	st=-1;
+	}
+	}
+}
+	trk++;
+}
+
+if(pw==1){
+c_wrdSpl=splt.join('');
+dv.innerHTML=c_wrdSpl;
+}else{
+c_pSpl=splt.join('');
+dv.innerHTML=c_pSpl;
+}
+
+}else{
+dv.innerHTML=spl;
+}
+
+}
+
+slq.onchange=function(){
+slq.blur(); 
+if(!wdSpl.checked){
+cenSpeech(pSpl,0);
+}else{
+cenSpeech(wrdSpl,1);
+}
 }
 ebd.oninput=function(){
 changer();
@@ -285,8 +544,14 @@ changer();
 }
 
 wdSpl.oninput=function(){
-dv.innerHTML=(!wdSpl.checked)?pSpl:wrdSpl;
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
+if(!wdSpl.checked){
+dv.innerHTML=pSpl;
+cenSpeech(pSpl,0);
+}else{
+dv.innerHTML=wrdSpl;
+cenSpeech(wrdSpl,1);
+}
 }
 
 </script>
