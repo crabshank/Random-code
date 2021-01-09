@@ -303,7 +303,15 @@ dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
 		st=trk;
 		//console.log(trk);
 		}else if(splt[trk]==marks[k][1] && st>=0){
-		mkc++;
+			for (let m=trk+1; m<splt.length; m++){
+if (splt[m]==marks[k][0]){
+	m=splt.length-1;
+	}else if (splt[m]==marks[k][1]){
+trk=m;
+}
+}
+mkc++;
+
 		st=-1;
 		}
 
@@ -360,6 +368,7 @@ let splt=gen_retain_spl(spl,[opn,cls,'¶{','⁋']);
 
 let st=-1;
 let trk=0;
+let ed=-1;
 let trkP=0;
 while (trk<splt.length) {
 if (trk<splt.length-1){
@@ -372,6 +381,13 @@ if(splt[trk]==opn &&  st==-1){
 st=trk;
 //console.log(trk);
 }else if(splt[trk]==cls && st>=0){
+	for (let m=trk+1; m<splt.length; m++){
+if (splt[m]==opn){
+	m=splt.length-1;
+	}else if (splt[m]==cls){
+trk=m;
+}
+}
 splt[st]='<blockquote>'+splt[st];
 splt[trk]+='</blockquote>';
 let trkP2=trkP;
