@@ -520,6 +520,31 @@ if (splt[trk]=='⁋'){
 	trk++;
 }
 
+splt=gen_retain_spl(splt.join(''),['<blockquote>','</blockquote>','<br>']);
+st=-1;
+trk=0;
+while (trk<splt.length) {
+if(splt[trk]=='<blockquote>' && st==-1){
+st=trk;
+//console.log(trk);
+}else if(splt[trk]=='</blockquote>' && st>=0){
+
+for (let j=st+1; j<trk; j++){
+if(splt[j]!='<br>'){
+splt[j]='<blockquote>'+splt[j]+'</blockquote>';
+}
+}
+
+splt[st]='';
+splt[trk]='';
+
+st=-1;
+}
+
+trk++;
+}
+
+
 splt=splt.join('').split('</blockquote>').join('</section>').split('<blockquote>').join('<section style="text-align: center;">');
 
 if(pw==1){
