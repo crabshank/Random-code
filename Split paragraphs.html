@@ -5,10 +5,28 @@
 <body>
 <title>Split paragraphs</title>
 <style>
-div > section:hover{
+div#bf {
+display: flex;
+margin-left: 71.29vw;
+position: fixed;
+margin-top: 86.2vh;
+left: 0;
+transform: scale(2.16);
+transform-origin: bottom center;
+}
+div#bf > button {
+border-radius: 50%;
+background-color: rgb(38,38,38);
+color: white;
+margin-right:4px;
+}
+div#fmmt > section:hover, section.current{
 background-color: hsl(46deg 90% 28%);
 }
-div > section {
+div#fmmt > section.quote{
+text-align: center;
+}
+div#fmmt > section {
 display: inline-block;
 width: 100%;
 color: white;
@@ -20,14 +38,19 @@ background-color: hsl(0 0% 8% / 1);
 </style>
 <h1 style="text-align: center; margin-bottom: 1.1%;">Split text</h1>
 <input type="checkbox" style="margin-left: 50%;">Split by word (space)</input><br>
+<div id="bf"><button id="prev">◀</button><button id="next">▶</button></div>
 <label for="quotes" style="margin-left: 50%;">Select quotation mark type: </label><select id="quotes" style="color: black; background-color: buttonface;"></select>
 <main style="display: flex;">
 <textarea style="box-shadow: 0 0 0px 1px black; border-width: 0px; width:50%;"></textarea>
-<div style="float:right; margin-inline-start: 4px;  width:50%;"></div>
+<div id="fmmt" style="float:right; margin-inline-start: 4px;  width:50%;"></div>
 </main>
 <script>
 var last='';
 var p_cnt=1;
+var curr=-1	;
+var sct=[];
+var prv=document.getElementById("prev");
+var nxt=document.getElementById("next");
 
 function resize(el,ceil){
 el.style.maxWidth=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
@@ -59,7 +82,7 @@ slq=document.getElementById("quotes");
 
 
 ebd=document.getElementsByTagName("textarea")[0];
-dv=document.getElementsByTagName("div")[0];
+dv=document.getElementById("fmmt");
 var gFontSize=window.getComputedStyle(dv, null).getPropertyValue('font-size');
 ebd.style.fontSize=gFontSize;
 
@@ -558,7 +581,7 @@ trk++;
 }
 
 
-splt=splt.join('').split('</blockquote><br><section>').join('</blockquote><br><br><section>').split('</section><br><blockquote>').join('</section><br><br><blockquote>').split('</blockquote>').join('</section>').split('<blockquote>').join('<section style="text-align: center;">');
+splt=splt.join('').split('</blockquote><br><section>').join('</blockquote><br><br><section>').split('</section><br><blockquote>').join('</section><br><br><blockquote>').split('</blockquote>').join('</section>').split('<blockquote>').join('<section class="quote">');
 
 if(pw==1){
 c_wrdSpl=splt;
@@ -571,6 +594,8 @@ dv.innerHTML=c_pSpl;
 }else{
 dv.innerHTML=spl;
 }
+
+sct=dv.getElementsByTagName('SECTION');
 
 }
 
@@ -600,6 +625,73 @@ cenSpeech(pSpl,0);
 dv.innerHTML=wrdSpl;
 cenSpeech(wrdSpl,1);
 }
+}
+
+prv.onclick=function(){
+let curr0=curr;
+curr=(curr0>=0)?curr0-1:-1;
+
+
+curr1=(curr<=-1)?0:curr0;
+curr1=(curr0>sct.length-1)?sct.length-1:curr0;
+curr1=(curr1<=-1)?0:curr1;
+
+curr2=(curr0>=sct.length-1)?sct.length-1:curr0+1;
+
+let c1=sct[curr1];
+let c2=sct[curr2];
+
+if(curr>=0){
+let c=sct[curr];
+let bef=(curr-7>0)?curr-7:0;
+bef=(curr>sct.length-1)?sct.length-8:bef;
+sct[bef].scrollIntoView();
+if (!c.classList.contains("current")) {
+	c.classList.add("current");
+}
+}else{
+sct[0].scrollIntoView();
+}
+
+if (c1.classList.contains("current") && curr<sct.length-1) {
+	c1.classList.remove("current");
+}
+
+if (c2.classList.contains("current") && curr<sct.length-1) {
+	c2.classList.remove("current");
+}
+
+}
+
+nxt.onclick=function(){
+let curr0=curr;
+curr=(curr0==sct.length)?curr0:curr0+1;
+curr1=(curr0>=sct.length-2)?curr0:curr0+2;
+curr1=(curr1>sct.length-1)?sct.length-1:curr1;
+curr2=(curr0>0)?curr0:0;
+curr2=(curr2>sct.length-1)?sct.length-1:curr2;
+let c1=sct[curr1];
+let c2=sct[curr2];
+
+if(curr<sct.length){
+let c=sct[curr];
+let bef=(curr-7>0)?curr-7:0;
+sct[bef].scrollIntoView();
+if (!c.classList.contains("current")) {
+	c.classList.add("current");
+}
+}else{
+sct[sct.length-1].scrollIntoView();
+}
+
+if (c1.classList.contains("current") && curr<sct.length-1) {
+	c1.classList.remove("current");
+}
+
+if (c2.classList.contains("current") && curr>0) {
+	c2.classList.remove("current");
+}
+
 }
 
 </script>
