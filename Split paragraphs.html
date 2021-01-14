@@ -665,7 +665,7 @@ let c2=sct[curr2];
 
 if(curr>=0){
 let c=sct[curr];
-let bef=(curr-7>0)?curr-7:0;
+let bef=(curr-8>0)?curr-8:0;
 bef=(curr>sct.length-1)?sct.length-8:bef;
 sct[bef].scrollIntoView();
 if (!c.classList.contains("current")) {
@@ -697,7 +697,7 @@ let c2=sct[curr2];
 
 if(curr<sct.length){
 let c=sct[curr];
-let bef=(curr-7>0)?curr-7:0;
+let bef=(curr-8>0)?curr-8:0;
 sct[bef].scrollIntoView();
 if (!c.classList.contains("current")) {
 	c.classList.add("current");
