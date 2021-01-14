@@ -43,7 +43,7 @@ background-color: hsl(0 0% 8% / 1);
 <main style="display: flex;">
 <textarea style="box-shadow: 0 0 0px 1px black; border-width: 0px; width:50%;"></textarea>
 <div id="fmmt" style="float:right; margin-inline-start: 4px;  width:50%;"></div>
-<div id="bf"><button id="prev">◀</button><button id="next">▶</button></div>
+<div id="bf"><button id="prev" title="Highlight previous line">◀</button><button id="next" title="Highlight next line">▶</button></div>
 </main>
 <script>
 var last='';
@@ -616,7 +616,7 @@ dv.innerHTML=spl;
 prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
 //nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
 sct=dv.getElementsByTagName('SECTION');
-
+curr=-1;
 }
 
 slq.onchange=function(){
