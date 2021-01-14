@@ -7,18 +7,19 @@
 <style>
 div#bf {
 display: flex;
-margin-left: 71.29vw;
-position: fixed;
-margin-top: 86.2vh;
-left: 0;
-transform: scale(2.16);
-transform-origin: bottom center;
+margin-right: -0.8ch;
+filter: grayscale(0.14) opacity(0.04);
+margin-top: 0.14ch;
 }
 div#bf > button {
-border-radius: 50%;
-background-color: rgb(38,38,38);
 color: white;
-margin-right:4px;
+}
+div#bf > button#prev {
+background-image: linear-gradient(to right,hsl(0 100% 15% / 1),hsl(0deg 88% 39%));
+}
+div#bf > button#next {
+margin-left: 0.2ch;
+background-image: linear-gradient(to right,hsl(120deg 67% 33%),hsl(120 100% 15% / 1));
 }
 div#fmmt > section:hover, section.current{
 background-color: hsl(46deg 90% 28%);
@@ -30,7 +31,7 @@ div#fmmt > section {
 display: inline-block;
 width: 100%;
 color: white;
-border-right: 0.81ch dotted transparent;
+//border-right: 0.81ch dotted transparent;
 }
 body, textarea {
 background-color: hsl(0 0% 8% / 1);
@@ -38,11 +39,11 @@ background-color: hsl(0 0% 8% / 1);
 </style>
 <h1 style="text-align: center; margin-bottom: 1.1%;">Split text</h1>
 <input type="checkbox" style="margin-left: 50%;">Split by word (space)</input><br>
-<div id="bf"><button id="prev">◀</button><button id="next">▶</button></div>
 <label for="quotes" style="margin-left: 50%;">Select quotation mark type: </label><select id="quotes" style="color: black; background-color: buttonface;"></select>
 <main style="display: flex;">
 <textarea style="box-shadow: 0 0 0px 1px black; border-width: 0px; width:50%;"></textarea>
 <div id="fmmt" style="float:right; margin-inline-start: 4px;  width:50%;"></div>
+<div id="bf"><button id="prev">◀</button><button id="next">▶</button></div>
 </main>
 <script>
 var last='';
@@ -81,13 +82,25 @@ slq=document.getElementById("quotes");
   });
 
 
-ebd=document.getElementsByTagName("textarea")[0];
-dv=document.getElementById("fmmt");
+var ebd=document.getElementsByTagName("textarea")[0];
+var npb=document.getElementById("bf");
+var dv=document.getElementById("fmmt");
 var gFontSize=window.getComputedStyle(dv, null).getPropertyValue('font-size');
 ebd.style.fontSize=gFontSize;
 
+npb.onmouseenter=function(){
+npb.style.setProperty("filter", "grayscale(0.14)");
+}
+
+npb.onmouseleave=function(){
+npb.style.setProperty("filter", "grayscale(0.14) opacity(0.04)");
+}
+
 resize(ebd,0);
 resize(dv,1);
+
+prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
+//nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
 
 dv.oninput=function () {
 dv.style.height = 'inherit';
@@ -216,11 +229,13 @@ if (n<0){
 
 function changer(){
 ebd.style.height = 'inherit';
-ebd.style.height = (dv.scrollHeight+2)+"px";
-dv.innerHTML=ebd.value;
+ebd.style.height = (dv.scrollHeight+2)+"px";	
+dv.innerHTML=ebd.value.split('<').join('&lt;').split('>').join('&gt;');
+prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
+//nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
 p_cnt=1;
 if(ebd.value!=''){
-let itd=retain_spl_arr(ebd.value.trim(),'\n');
+let itd=retain_spl_arr(ebd.value.split('<').join('&lt;').split('>').join('&gt;').trim(),'\n');
 for (let k= 0; k < itd.length; k++){
 if (itd[k]=='\n'){
 itd[k]='<br>';
@@ -308,6 +323,8 @@ dv.innerHTML=(!wdSpl.checked)?pSpl:wrdSpl;
 }else{
 dv.innerHTML='';
 }
+prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
+//nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
 last=ebd.value;
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
 
@@ -316,7 +333,7 @@ dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
   let srt=[];
   for (let k = 1; k <op.length ; k++) {
   
-		let splt=gen_retain_spl(ebd.value,marks[k]);
+		let splt=gen_retain_spl(ebd.value.split('<').join('&lt;').split('>').join('&gt;'),marks[k]);
 		
 		let st=-1;
 		let trk=0;
@@ -384,6 +401,8 @@ return out.curr;
 function cenSpeech(spl,pw){
 if (slq.selectedIndex!=0){
 dv.innerHTML='';
+prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
+//nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
 let opn=marks[slq.selectedIndex][0];
 let cls=marks[slq.selectedIndex][1];
 
@@ -594,7 +613,8 @@ dv.innerHTML=c_pSpl;
 }else{
 dv.innerHTML=spl;
 }
-
+prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
+//nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
 sct=dv.getElementsByTagName('SECTION');
 
 }
@@ -625,6 +645,8 @@ cenSpeech(pSpl,0);
 dv.innerHTML=wrdSpl;
 cenSpeech(wrdSpl,1);
 }
+prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
+//nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
 }
 
 prv.onclick=function(){
