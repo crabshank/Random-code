@@ -488,7 +488,7 @@ trk++;
 		}else{
 		
 		for (let s=st+1; s<trk-1; s++) {
-		if (splt[s]=='<br>'&& splt[s+1]!='⁋'){
+		if (splt[s]=='<br>' && splt[s+1]!='⁋' && splt[s+1]!=''){
 		splt[s]='';
 		}else{
 		s=trk-1;
@@ -496,7 +496,7 @@ trk++;
 		}
 
 		for (let n=trk-2; n>st; n--) {
-		if (splt[n]=='<br>' && splt[n+1]!='⁋'){
+		if (splt[n]=='<br>' && splt[n+1]!='⁋' && splt[n+1]!=''){
 		splt[n]='';
 		}else{
 		n=st-1;
