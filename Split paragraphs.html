@@ -3,7 +3,7 @@
 <meta charset="UTF-8">
 </head>
 <body>
-<title>Split paragraphs</title>
+<title>Split paragraphs (with TTS)</title>
 <style>
 div#bf {
 display: flex;
@@ -41,8 +41,14 @@ main {
 color: white;
 }
 </style>
-<h1 style="text-align: center; margin-bottom: 1.1%;">Split text</h1>
-<input type="checkbox" style="margin-left: 50%;">Split by word (space)</input><br>
+<h1 style="text-align: center; margin-bottom: 1.1%;">Split paragraphs (with TTS)</h1>
+<input type="checkbox" style="margin-left: 50%;">Split by word (space)</input>
+<!-- <button id="sSpeak" style="background-color: buttonface;">Speak</button> -->
+<select id="voice-select" style="background-color: buttonface;" title="TTS voices"></select><br>
+<label for="rter" style="margin-left: 50%;" id="rteLb">Rate:</label>
+<input type="number" min="0.1" max="10" step="0.01" value="1.2" id="rter"><br>
+<label for="vol" style="margin-left: 50%;" id="volL">Volume: 0.45</label>
+<input type="range" min="0.1" max="1" step="0.01" value="0.45" id="vol"><br>
 <label for="quotes" style="margin-left: 50%;">Select quotation mark type: </label><select id="quotes" style="color: black; background-color: buttonface;"></select>
 <main style="display: flex;">
 <textarea style="box-shadow: 0 0 0px 1px black; border-width: 0px; width:50%;"></textarea>
@@ -50,13 +56,15 @@ color: white;
 <div id="bf"><button id="prev" title="Highlight previous line">◀</button><button id="next" title="Highlight next line">▶</button></div>
 </main>
 <script>
+// Init voices array
+var voices = [];
 var last='';
 var p_cnt=1;
 var curr=-1	;
 var sct=[];
 var prv=document.getElementById("prev");
 var nxt=document.getElementById("next");
-
+var currLine;
 function resize(el,ceil){
 el.style.maxWidth=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
 el.style.height=Math.max(window.innerHeight,el.scrollHeight);
@@ -72,6 +80,35 @@ var c_pSpl='';
 var c_wrdSpl='';
 
 wdSpl=document.getElementsByTagName("input")[0];
+const synth = window.speechSynthesis;
+
+var rteLbl = document.getElementById('rteLb');
+var rterg = document.getElementById('rter');
+var wheeling=false;
+rterg.onwheel=function(event){
+if(!!wheeling){
+wheeling=true;
+if(event.deltaY>0){
+rterg.value=Math.max(parseFloat(rterg.min),parseFloat(rterg.value)-parseFloat(rterg.step)).toLocaleString('en-GB', {minimumFractionDigits: 0, maximumFractionDigits: 7, useGrouping: false});
+}
+
+if (event.deltaY<0){
+rterg.value=Math.min(parseFloat(rterg.max),parseFloat(rterg.value)+parseFloat(rterg.step)).toLocaleString('en-GB', {minimumFractionDigits: 0, maximumFractionDigits: 7, useGrouping: false});
+}
+wheeling=false;
+}
+}
+
+var volLbl = document.getElementById('volL');
+var volSd = document.getElementById('vol');
+
+volSd.oninput=function(event){
+synth.cancel();
+volLbl.innerText= 'Volume: '+volSd.value.toLocaleString('en-GB', {minimumFractionDigits: 0, maximumFractionDigits: 7, useGrouping: false});
+speak(currLine);
+}
+
+
 slq=document.getElementById("quotes");
   var marks = [[],['"','"'],['“','”'],["‘", "’"],["'","'"],["’","’"],["‚","’"],['„','“'],['«','»'],['»','«'],['《','》'],['‹','›'],['›','‹'],['「','」'],['『','』']];
 
@@ -86,6 +123,8 @@ slq=document.getElementById("quotes");
   });
 
 
+/*spk=document.getElementById("sSpeak");*/
+slv=document.getElementById("voice-select");
 var ebd=document.getElementsByTagName("textarea")[0];
 var npb=document.getElementById("bf");
 var dv=document.getElementById("fmmt");
@@ -653,6 +692,39 @@ prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
 //nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
 }
 
+function speak(line){
+synth.cancel();
+if(line!=''){
+let lns=[...dv.getElementsByTagName('SECTION')];
+var selectedVoice = slv.selectedOptions[0].getAttribute('data-name');
+let rate=rterg.valueAsNumber;
+let pitch=1;
+let vol=volSd.valueAsNumber;
+let vce;
+voices.forEach(voice => {
+      if (voice.name === selectedVoice) {
+        vce=voice;
+      }
+    });
+
+
+let speakText = new SpeechSynthesisUtterance(line);
+		
+	speakText.voice = vce;
+	    // Set pitch and rate
+    speakText.rate = rate;
+    speakText.pitch = pitch;
+    speakText.volume = vol;
+    // Speak
+    synth.speak(speakText);
+}
+}
+
+
+/*spk.onclick=function () {
+speak();
+}*/
+
 prv.onclick=function(){
 let curr0=curr;
 curr=(curr0>=0)?curr0-1:-1;
@@ -674,6 +746,8 @@ bef=(curr>sct.length-1)?sct.length-8:bef;
 sct[bef].scrollIntoView();
 if (!c.classList.contains("current")) {
 	c.classList.add("current");
+	currLine=c.innerText;
+	speak(currLine);
 }
 }else{
 sct[0].scrollIntoView();
@@ -688,6 +762,8 @@ if (c2.classList.contains("current") && curr<sct.length-1) {
 }
 
 }
+
+
 
 nxt.onclick=function(){
 let curr0=curr;
@@ -705,6 +781,8 @@ let bef=(curr-8>0)?curr-8:0;
 sct[bef].scrollIntoView();
 if (!c.classList.contains("current")) {
 	c.classList.add("current");
+	currLine=c.innerText;
+	speak(currLine);
 }
 }else{
 sct[sct.length-1].scrollIntoView();
@@ -718,6 +796,27 @@ if (c2.classList.contains("current") && curr>0) {
 	c2.classList.remove("current");
 }
 
+}
+
+const getVoices = () => {
+  voices = synth.getVoices();
+  // Loop through voices and create an option for each one
+  voices.forEach(voice => {
+    // Create option element
+    const option = document.createElement('option');
+    // Fill option with voice and language
+    option.textContent = voice.name + ' (' + voice.lang + ')';
+
+    // Set needed option attributes
+    option.setAttribute('data-lang', voice.lang);
+    option.setAttribute('data-name', voice.name);
+    slv.appendChild(option);	
+  });
+};
+
+getVoices();
+if (synth.onvoiceschanged !== undefined) {
+  synth.onvoiceschanged = getVoices;
 }
 
 </script>
