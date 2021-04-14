@@ -56,6 +56,7 @@ color: white;
 <div id="bf"><button id="prev" title="Highlight previous line">◀</button><button id="next" title="Highlight next line">▶</button></div>
 </main>
 <script>
+var queueLen=0;
 // Init voices array
 var voices = [];
 var last='';
@@ -693,7 +694,6 @@ prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
 }
 
 function speak(line){
-synth.cancel();
 let vol=volSd.valueAsNumber;
 if(line!='' && vol>=0.1){
 let lns=[...dv.getElementsByTagName('SECTION')];
@@ -715,8 +715,19 @@ let speakText = new SpeechSynthesisUtterance(line);
     speakText.rate = rate;
     speakText.pitch = pitch;
     speakText.volume = vol;
+	speakText.onend = e => {
+		if(queueLen>3){
+		queueLen=0;
+		synth.cancel();
+		}else{
+		queueLen=(queueLen<=0)?0:queueLen-1;
+		}
+    };
     // Speak
-    synth.speak(speakText);
+	queueLen++;
+	if(queueLen<=3){
+		synth.speak(speakText);
+	}
 }
 }
 
@@ -747,7 +758,12 @@ sct[bef].scrollIntoView();
 if (!c.classList.contains("current")) {
 	c.classList.add("current");
 	currLine=c.innerText;
+	if(queueLen<=2){
 	speak(currLine);
+	}else{
+	queueLen=0;
+	synth.cancel();
+	}
 }
 }else{
 sct[0].scrollIntoView();
@@ -782,7 +798,12 @@ sct[bef].scrollIntoView();
 if (!c.classList.contains("current")) {
 	c.classList.add("current");
 	currLine=c.innerText;
+	if(queueLen<=2){
 	speak(currLine);
+	}else{
+	queueLen=0;
+	synth.cancel();
+	}
 }
 }else{
 sct[sct.length-1].scrollIntoView();
