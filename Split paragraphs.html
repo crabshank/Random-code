@@ -175,7 +175,8 @@ let ln='';
 
 if (p){
 	str=str.split(c).join(c+ln);
-}
+	return str;
+}else{
 	var spl=retain_spl_arr(str,' ');
 
 
@@ -213,6 +214,7 @@ if (!f){
 
 
 return spl.join('');
+}
 }
 
 
