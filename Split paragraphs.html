@@ -164,7 +164,7 @@ sb.push(sa[k]);
 return sb;
 }
 
-function attached_chars(c,str,n,f){
+function attached_chars(c,str,n,f,p){
 let ln='';
 
 
@@ -173,7 +173,11 @@ let ln='';
 	}
 
 
-var spl=retain_spl_arr(str,' ');
+if (p){
+	str=str.split(c).join(c+ln);
+}
+	var spl=retain_spl_arr(str,' ');
+
 
 if (!f){
 	for (let i=spl.length-2; i>0; i--){
@@ -290,30 +294,30 @@ p_cnt++;
 
 
 function brk(ln){
-	ln=attached_chars('.',ln,2,true);
-	ln=attached_chars('。',ln,2,true);
-	ln=attached_chars('︒',ln,2,true);
-	ln=attached_chars('?',ln,2,true);
-	ln=attached_chars('؟',ln,2,true);
-	ln=attached_chars('‽',ln,2,true);
-	ln=attached_chars('？',ln,2,true);
-	ln=attached_chars('¡',ln,2,false);
-	ln=attached_chars('¿',ln,2,false);
-	ln=attached_chars('⸘',ln,2,false);
-	ln=attached_chars('՞',ln,2,true);
-	ln=attached_chars('!',ln,2,true);
-	ln=attached_chars('~',ln,2,true);
-	ln=attached_chars('！',ln,2,true);
-	ln=attached_chars(':',ln,1,true);
-	ln=attached_chars('：',ln,1,true);
-	ln=attached_chars(';',ln,1,true);
-	ln=attached_chars('；',ln,1,true);
-	ln=attached_chars('·',ln,1,true);
-	ln=attached_chars('჻',ln,1,true);
-	ln=attached_chars(',',ln,1,true);
-	ln=attached_chars('，',ln,1,true);
-	ln=attached_chars('、',ln,1,true);
-	ln=attached_chars('،',ln,1,true);
+	ln=attached_chars('.',ln,2,true,false);
+	ln=attached_chars('。',ln,2,true,true);
+	ln=attached_chars('︒',ln,2,true,true);
+	ln=attached_chars('?',ln,2,true,false);
+	ln=attached_chars('؟',ln,2,true,false);
+	ln=attached_chars('‽',ln,2,true,false);
+	ln=attached_chars('？',ln,2,true,true);
+	ln=attached_chars('¡',ln,2,false,false);
+	ln=attached_chars('¿',ln,2,false,false);
+	ln=attached_chars('⸘',ln,2,false,false);
+	ln=attached_chars('՞',ln,2,true,true);
+	ln=attached_chars('!',ln,2,true,false);
+	ln=attached_chars('~',ln,2,true,false);
+	ln=attached_chars('！',ln,2,true,true);
+	ln=attached_chars(':',ln,1,true,false);
+	ln=attached_chars('：',ln,1,true,true);
+	ln=attached_chars(';',ln,1,true,false);
+	ln=attached_chars('；',ln,1,true,true);
+	ln=attached_chars('·',ln,1,true,false);
+	ln=attached_chars('჻',ln,1,true,true);
+	ln=attached_chars(',',ln,1,true,false);
+	ln=attached_chars('，',ln,1,true,true);
+	ln=attached_chars('、',ln,1,true,true);
+	ln=attached_chars('،',ln,1,true,false);
 	return ln;
 }
 
