@@ -704,7 +704,6 @@ prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
 function speak(line){
 let vol=volSd.valueAsNumber;
 if(line!='' && vol>=0.1){
-let lns=[...dv.getElementsByTagName('speak')];
 var selectedVoice = slv.selectedOptions[0].getAttribute('data-name');
 let rate=rterg.valueAsNumber;
 let pitch=1;
