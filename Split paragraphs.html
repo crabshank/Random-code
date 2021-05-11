@@ -66,6 +66,7 @@ var sct=[];
 var prv=document.getElementById("prev");
 var nxt=document.getElementById("next");
 var currLine;
+var spk=false;
 function resize(el,ceil){
 el.style.maxWidth=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
 el.style.height=Math.max(window.innerHeight,el.scrollHeight);
@@ -728,6 +729,11 @@ let speakText = new SpeechSynthesisUtterance(line);
 		synth.cancel();
 		}else{
 		queueLen=(queueLen<=0)?0:queueLen-1;
+		if(curr<=sct.length && spk){
+		nextLine();
+		}else if(!spk){
+			synth.cancel();
+		}
 		}
     };
     // Speak
@@ -743,7 +749,7 @@ let speakText = new SpeechSynthesisUtterance(line);
 speak();
 }*/
 
-prv.onclick=function(){
+function prevLine(){
 let curr0=curr;
 curr=(curr0>=0)?curr0-1:-1;
 
@@ -786,9 +792,13 @@ if (c2.classList.contains("current") && curr<sct.length-1) {
 
 }
 
+prv.onclick=function(){
+synth.cancel();
+spk=false;
+prevLine();
+}
 
-
-nxt.onclick=function(){
+function nextLine(){
 let curr0=curr;
 curr=(curr0==sct.length)?curr0:curr0+1;
 curr1=(curr0>=sct.length-2)?curr0:curr0+2;
@@ -825,6 +835,14 @@ if (c2.classList.contains("current") && curr>0) {
 }
 
 }
+
+nxt.onclick=function(){
+spk=true;
+nextLine();
+}
+
+
+
 
 const getVoices = () => {
   voices = synth.getVoices();
