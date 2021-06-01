@@ -1,0 +1,10 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Unknown\shell\HxD]
+@="Open with HxD"
+
+[HKEY_CLASSES_ROOT\Unknown\shell\HxD\command]
+@="C:\\Program Files\\HxD\\HxD.exe %1"
+
+[HKEY_CLASSES_ROOT\Unknown\DefaultIcon]
+@="C:\\Program Files\\HxD\\HxD.exe"
