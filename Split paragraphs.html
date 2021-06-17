@@ -5,6 +5,16 @@
 <body>
 <title>Split paragraphs (with TTS)</title>
 <style>
+hr#wdt{
+    display: inline-block;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    background: buttonface;
+    width: 10px;
+    border-style: none;
+	background: buttonface;
+	opacity: 0;
+}
 div#bf {
 display: flex;
 margin-right: -0.8ch;
@@ -29,7 +39,6 @@ text-align: center;
 }
 div#fmmt > speak {
 display: inline-block;
-width: 100%;
 color: white;
 //border-right: 0.81ch dotted transparent;
 }
@@ -39,6 +48,12 @@ color: white;
 }
 main {
 color: white;
+}
+</style>
+
+<style id="spkWdt">
+div#fmmt > speak {
+width: 100%;
 }
 </style>
 <h1 style="text-align: center; margin-bottom: 1.1%;">Split paragraphs (with TTS)</h1>
@@ -53,6 +68,7 @@ color: white;
 <main style="display: flex;">
 <textarea style="box-shadow: 0 0 0px 1px black; border-width: 0px; width:50%;"></textarea>
 <div id="fmmt" style="float:right; margin-inline-start: 4px;  width:50%;"></div>
+<hr id="wdt"></hr>
 <div id="bf"><button id="prev" title="Highlight previous line">◀</button><button id="next" title="Highlight next line">▶</button></div>
 </main>
 <script>
@@ -65,12 +81,52 @@ var curr=-1	;
 var sct=[];
 var prv=document.getElementById("prev");
 var nxt=document.getElementById("next");
+var wdth=document.getElementById("wdt");
+var spkWdth=document.getElementById("spkWdt");
+var ebd=document.getElementsByTagName("textarea")[0];
 var currLine;
 var spk=false;
+var overDivd={over:false};
+var dv=document.getElementById("fmmt");
+	wdth.onpointerenter=function () {
+        overDivd.over=true;
+				wdth.style.setProperty( 'cursor','col-resize');
+		wdth.style.setProperty( 'opacity',1);
+    }
+	
+	wdth.onpointerleave= function (e) {
+		if(e.buttons>0){	
+		wdth.style.setProperty( 'cursor','col-resize');
+		wdth.style.setProperty( 'opacity',1);
+		overDivd.over=true;
+}else{
+			 overDivd.over=false;
+			 wdth.style.setProperty( 'opacity',0);
+		}
+    }
+	
+	document.addEventListener('pointermove',function (e) {
+		e.preventDefault();
+       if(overDivd.over && e.buttons>0){	
+		   let ebdRect=ebd.getBoundingClientRect();
+		   wdth.style.setProperty( 'position','absolute' );
+		   let lf=Math.min( prv.getBoundingClientRect().left-wdth.clientWidth,Math.max(e.pageX,ebdRect.right));
+		   wdth.style.setProperty( 'left',lf+'px' );
+		  spkWdth.innerHTML='div#fmmt > speak{max-width: '+Math.max(0,wdth.getBoundingClientRect().left-ebdRect.right-parseFloat(window.getComputedStyle(dv, null).getPropertyValue('margin-left')))+'px; word-break: keep-all;}' ;
+	   }
+    });	
+
+
+
+	document.addEventListener('dblclick',function () {
+			  wdth.style.setProperty( 'position','static');
+			  spkWdth.innerHTML='';
+    });	
+
 function resize(el,ceil){
 el.style.maxWidth=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
 el.style.height=Math.max(window.innerHeight,el.scrollHeight);
-
+	
 document.body.onresize=function(){
 el.style.maxWidth=(ceil==1)?Math.ceil(document.body.offsetWidth*0.5):Math.floor(document.body.offsetWidth*0.5);
 }
@@ -127,22 +183,21 @@ slq=document.getElementById("quotes");
 
 /*spk=document.getElementById("sSpeak");*/
 slv=document.getElementById("voice-select");
-var ebd=document.getElementsByTagName("textarea")[0];
 var npb=document.getElementById("bf");
-var dv=document.getElementById("fmmt");
 var gFontSize=window.getComputedStyle(dv, null).getPropertyValue('font-size');
 ebd.style.fontSize=gFontSize;
 
-npb.onmouseenter=function(){
+npb.onpointerenter=function(){
 npb.style.setProperty("filter", "grayscale(0.14)");
 }
 
-npb.onmouseleave=function(){
+npb.onpointerleave=function(){
 npb.style.setProperty("filter", "grayscale(0.14) opacity(0.04)");
 }
 
 resize(ebd,0);
 resize(dv,1);
+wdth.style.height=Math.max(window.innerHeight,dv.scrollHeight)+'px';
 
 prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
 //nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
@@ -150,6 +205,7 @@ prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
 dv.oninput=function () {
 dv.style.height = 'inherit';
 dv.style.height = (dv.scrollHeight+2)+"px";
+wdth.style.height=(dv.scrollHeight+2)+'px';
 }
 function retain_spl_arr(s,c){
 var sa= s.split(c);
