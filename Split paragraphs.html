@@ -13,7 +13,7 @@ hr#wdt{
     width: 10px;
     border-style: none;
 	background: buttonface;
-	opacity: 0;
+	opacity: 0.04;
 }
 div#bf {
 display: flex;
@@ -77,7 +77,7 @@ var queueLen=0;
 var voices = [];
 var last='';
 var p_cnt=1;
-var curr=-1	;
+var curr=-1;
 var sct=[];
 var prv=document.getElementById("prev");
 var nxt=document.getElementById("next");
@@ -95,19 +95,28 @@ var dv=document.getElementById("fmmt");
     }
 	
 	wdth.onpointerleave= function (e) {
-		if(e.buttons>0){	
+		if(overDivd.over){	
 		wdth.style.setProperty( 'cursor','col-resize');
-		wdth.style.setProperty( 'opacity',1);
+		wdth.style.setProperty( 'opacity',0.04);
 		overDivd.over=true;
 }else{
 			 overDivd.over=false;
-			 wdth.style.setProperty( 'opacity',0);
+			 wdth.style.setProperty( 'opacity',0.04);
 		}
     }
-	
+	document.addEventListener('pointerdown',function (e) {
+		if(e.target!==wdth && !overDivd.over){
+			wdth.style.setProperty( 'opacity',0.04);
+			}
+});
+document.addEventListener('pointerup',function (e) {
+			overDivd.over=false;
+			wdth.style.setProperty( 'opacity',0.04);
+});
+
 	document.addEventListener('pointermove',function (e) {
 		e.preventDefault();
-       if(overDivd.over && e.buttons>0){	
+       if(overDivd.over){	
 		   let ebdRect=ebd.getBoundingClientRect();
 		   wdth.style.setProperty( 'position','absolute' );
 		   let lf=Math.min( prv.getBoundingClientRect().left-wdth.clientWidth,Math.max(e.pageX,ebdRect.right));
