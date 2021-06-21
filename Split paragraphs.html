@@ -89,7 +89,7 @@ color: white;
 div#fmmt > speak.quote{
 text-align: center;
 word-break: keep-all;
-display: flow-root;
+display: inline-block;
 }
 `;
 
@@ -137,7 +137,7 @@ wdth.onpointerenter=function () {
 		   let lf=Math.min( prv.getBoundingClientRect().left-wdth.clientWidth,Math.max(e.pageX,ebdRect.right));
 		   wdth.style.setProperty( 'left',lf+'px' );
 		   let nw_w=Math.max(0,wdth.getBoundingClientRect().left-ebdRect.right-parseFloat(window.getComputedStyle(dv, null).getPropertyValue('margin-left')));
-		  spkWdth.innerHTML='div#fmmt > speak{max-width: '+nw_w+'px; word-break: keep-all;  width: 100%; display: inline-block; color: white;} div#fmmt > speak.quote{max-width: '+nw_w+'px; text-align: center; word-break: keep-all; display: flow-root;}';
+		  spkWdth.innerHTML='div#fmmt > speak{max-width: '+nw_w+'px; word-break: keep-all;  width: 100%; display: inline-block; color: white;} div#fmmt > speak.quote{max-width: '+nw_w+'px; text-align: center; word-break: keep-all; display: inline-block;}';
 }
     });
 	
@@ -758,6 +758,21 @@ let chn=[...dv.childNodes];
 let nw_dvHTML=[];
 for (let i=0; i<chn.length; i++){
 if(chn[i].nodeName==="#text" ){
+		let pushed=false;
+		if(i<chn.length-1 && chn[i+1].nodeName!=="BR"){
+		nw_dvHTML.push(chn[i]);
+		nw_dvHTML.push(document.createElement('BR'));
+		pushed=true;
+		}
+		if(i>0 && chn[i-1].nodeName!=="BR"){
+		nw_dvHTML.push(document.createElement('BR'));
+		nw_dvHTML.push(chn[i]);
+		pushed=true;
+		}
+		if(!pushed){
+		nw_dvHTML.push(chn[i]);	
+		}
+		}else if(chn[i].nodeName==="SPEAK" ){
 		let pushed=false;
 		if(i<chn.length-1 && chn[i+1].nodeName!=="BR"){
 		nw_dvHTML.push(chn[i]);
