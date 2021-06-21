@@ -13,12 +13,12 @@ hr#wdt{
     width: 10px;
     border-style: none;
 	background: buttonface;
-	opacity: 0.04;
+	opacity: 0.06;
 }
 div#bf {
 display: flex;
 margin-right: -0.8ch;
-filter: grayscale(0.14) opacity(0.04);
+filter: grayscale(0.14) opacity(0.06);
 margin-top: 0.14ch;
 }
 div#bf > button {
@@ -34,14 +34,8 @@ background-image: linear-gradient(to right,hsl(120deg 67% 33%),hsl(120 100% 15% 
 div#fmmt > speak:hover, speak.current{
 background-color: hsl(46deg 90% 28%);
 }
-div#fmmt > speak.quote{
-text-align: center;
-}
-div#fmmt > speak {
-display: inline-block;
-color: white;
-//border-right: 0.81ch dotted transparent;
-}
+
+
 body, textarea {
 background-color: hsl(0 0% 8% / 1);
 color: white;
@@ -51,11 +45,7 @@ color: white;
 }
 </style>
 
-<style id="spkWdt">
-div#fmmt > speak {
-width: 100%;
-}
-</style>
+<style id="spkWdt"></style>
 <h1 style="text-align: center; margin-bottom: 1.1%;">Split paragraphs (with TTS)</h1>
 <input type="checkbox" style="margin-left: 50%;">Split by word (space)</input>
 <!-- <button id="sSpeak" style="background-color: buttonface;">Speak</button> -->
@@ -86,50 +76,74 @@ var spkWdth=document.getElementById("spkWdt");
 var ebd=document.getElementsByTagName("textarea")[0];
 var currLine;
 var spk=false;
-var overDivd={over:false};
+var overDivd={over:false, down:false};
 var dv=document.getElementById("fmmt");
-	wdth.onpointerenter=function () {
+var spkCss=`
+div#fmmt > speak {
+word-break: keep-all;
+width: 100%;
+display: inline-block;
+color: white;
+}
+
+div#fmmt > speak.quote{
+text-align: center;
+word-break: keep-all;
+}
+`;
+
+  spkWdth.innerHTML=spkCss;
+
+	document.addEventListener('pointerdown',function (e) {
+		if(e.target===wdth){
+		overDivd.down=true;
+		overDivd.over=true;
+			wdth.style.setProperty( 'opacity',1);
+			}
+});
+
+document.addEventListener('pointerup',function (e) {
+			overDivd.down=false;
+				if(e.target!==wdth){
+					overDivd.over=false;
+			wdth.style.setProperty( 'opacity',0.06);
+			}else{
+			overDivd.over=true;
+			}
+});
+
+wdth.onpointerenter=function () {
         overDivd.over=true;
 				wdth.style.setProperty( 'cursor','col-resize');
 		wdth.style.setProperty( 'opacity',1);
     }
-	
-	wdth.onpointerleave= function (e) {
-		if(overDivd.over){	
-		wdth.style.setProperty( 'cursor','col-resize');
-		wdth.style.setProperty( 'opacity',0.04);
-		overDivd.over=true;
-}else{
-			 overDivd.over=false;
-			 wdth.style.setProperty( 'opacity',0.04);
-		}
-    }
-	document.addEventListener('pointerdown',function (e) {
-		if(e.target!==wdth && !overDivd.over){
-			wdth.style.setProperty( 'opacity',0.04);
-			}
-});
-document.addEventListener('pointerup',function (e) {
-			overDivd.over=false;
-			wdth.style.setProperty( 'opacity',0.04);
-});
 
-	document.addEventListener('pointermove',function (e) {
+
+	wdth.onpointerleave= function () {
+				 overDivd.over=false;
+		if(!overDivd.down){	
+		wdth.style.setProperty( 'cursor','col-resize');
+		wdth.style.setProperty( 'opacity',0.06);
+}
+    }
+	
+	
+		document.addEventListener('pointermove',function (e) {
 		e.preventDefault();
-       if(overDivd.over){	
+       if(overDivd.down){	
 		   let ebdRect=ebd.getBoundingClientRect();
 		   wdth.style.setProperty( 'position','absolute' );
 		   let lf=Math.min( prv.getBoundingClientRect().left-wdth.clientWidth,Math.max(e.pageX,ebdRect.right));
 		   wdth.style.setProperty( 'left',lf+'px' );
-		  spkWdth.innerHTML='div#fmmt > speak{max-width: '+Math.max(0,wdth.getBoundingClientRect().left-ebdRect.right-parseFloat(window.getComputedStyle(dv, null).getPropertyValue('margin-left')))+'px; word-break: keep-all;}' ;
-	   }
-    });	
-
-
-
-	document.addEventListener('dblclick',function () {
+		   let nw_w=Math.max(0,wdth.getBoundingClientRect().left-ebdRect.right-parseFloat(window.getComputedStyle(dv, null).getPropertyValue('margin-left')));
+		  spkWdth.innerHTML='div#fmmt > speak{max-width: '+nw_w+'px; word-break: keep-all;  width: 100%; display: inline-block; color: white;} div#fmmt > speak.quote{max-width: '+nw_w+'px; text-align: center; word-break: keep-all;}';
+}
+    });
+	
+	
+	wdth.addEventListener('dblclick',function () {
 			  wdth.style.setProperty( 'position','static');
-			  spkWdth.innerHTML='';
+			  spkWdth.innerHTML=spkCss;
     });	
 
 function resize(el,ceil){
@@ -201,7 +215,7 @@ npb.style.setProperty("filter", "grayscale(0.14)");
 }
 
 npb.onpointerleave=function(){
-npb.style.setProperty("filter", "grayscale(0.14) opacity(0.04)");
+npb.style.setProperty("filter", "grayscale(0.14) opacity(0.06)");
 }
 
 resize(ebd,0);
@@ -348,6 +362,7 @@ ebd.style.height = 'inherit';
 ebd.style.height = (dv.scrollHeight+2)+"px";	
 dv.innerHTML=ebd.value.split('<').join('&lt;').split('>').join('&gt;');
 prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
+wdth.style.height=Math.max(window.innerHeight,dv.scrollHeight)+'px';
 //nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
 p_cnt=1;
 if(ebd.value!=''){
@@ -441,6 +456,7 @@ dv.innerHTML=(!wdSpl.checked)?pSpl:wrdSpl;
 dv.innerHTML='';
 }
 prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
+wdth.style.height=Math.max(window.innerHeight,dv.scrollHeight)+'px';
 //nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
 last=ebd.value;
 dv.style.fontSize=(!wdSpl.checked)?gFontSize:"194%";
@@ -520,6 +536,7 @@ if (slq.selectedIndex!=0){
 dv.innerHTML='';
 prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
 //nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
+wdth.style.height=Math.max(window.innerHeight,dv.scrollHeight)+'px';
 let opn=marks[slq.selectedIndex][0];
 let cls=marks[slq.selectedIndex][1];
 
@@ -732,8 +749,27 @@ dv.innerHTML=spl;
 }
 prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
 //nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
+wdth.style.height=Math.max(window.innerHeight,dv.scrollHeight)+'px';
 sct=dv.getElementsByTagName('speak');
 curr=-1;
+
+let chn=[...dv.childNodes];
+let nw_dvHTML=[];
+for (let i=0; i<chn.length; i++){
+	if(i<chn.length-1 && chn[i].nodeName==="#text" && chn[i+1].nodeName!=="BR"){
+	nw_dvHTML.push(chn[i]);
+	nw_dvHTML.push(document.createElement('BR'));
+	}else{
+	nw_dvHTML.push(chn[i]);
+	}
+}
+dv.innerHTML='';
+
+for (let i=0; i<nw_dvHTML.length; i++){
+dv.append(nw_dvHTML[i]);
+}
+
+
 }
 
 slq.onchange=function(){
@@ -764,6 +800,7 @@ cenSpeech(wrdSpl,1);
 }
 prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
 //nxt.style.setProperty("height", document.documentElement.scrollHeight+'px');
+wdth.style.height=Math.max(window.innerHeight,dv.scrollHeight)+'px';
 }
 
 function speak(line){
