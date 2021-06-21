@@ -756,9 +756,21 @@ curr=-1;
 let chn=[...dv.childNodes];
 let nw_dvHTML=[];
 for (let i=0; i<chn.length; i++){
-	if(i<chn.length-1 && chn[i].nodeName==="#text" && chn[i+1].nodeName!=="BR"){
-	nw_dvHTML.push(chn[i]);
-	nw_dvHTML.push(document.createElement('BR'));
+if(chn[i].nodeName==="#text" ){
+		let pushed=false;
+		if(i<chn.length-1 && chn[i+1].nodeName!=="BR"){
+		nw_dvHTML.push(chn[i]);
+		nw_dvHTML.push(document.createElement('BR'));
+		pushed=true;
+		}
+		if(i>0 && chn[i-1].nodeName!=="BR"){
+		nw_dvHTML.push(document.createElement('BR'));
+		nw_dvHTML.push(chn[i]);
+		pushed=true;
+		}
+		if(!pushed){
+		nw_dvHTML.push(chn[i]);
+		}
 	}else{
 	nw_dvHTML.push(chn[i]);
 	}
