@@ -759,31 +759,34 @@ let nw_dvHTML=[];
 for (let i=0; i<chn.length; i++){
 if(chn[i].nodeName==="#text" ){
 		let pushed=false;
+if(i>0 && chn[i-1].nodeName!=="BR"){
+		nw_dvHTML.push(document.createElement('BR'));
+		nw_dvHTML.push(chn[i]);
+		pushed=true;
+		}
+
 		if(i<chn.length-1 && chn[i+1].nodeName!=="BR"){
-		nw_dvHTML.push(chn[i]);
+		if(!pushed){nw_dvHTML.push(chn[i]);}
 		nw_dvHTML.push(document.createElement('BR'));
 		pushed=true;
 		}
-		if(i>0 && chn[i-1].nodeName!=="BR"){
-		nw_dvHTML.push(document.createElement('BR'));
-		nw_dvHTML.push(chn[i]);
-		pushed=true;
-		}
+		
 		if(!pushed){
 		nw_dvHTML.push(chn[i]);	
 		}
 		}else if(chn[i].nodeName==="SPEAK" ){
 		let pushed=false;
+if(i>0 && chn[i-1].nodeName!=="BR"){
+		nw_dvHTML.push(document.createElement('BR'));
+		nw_dvHTML.push(chn[i]);
+		pushed=true;
+		}
 		if(i<chn.length-1 && chn[i+1].nodeName!=="BR"){
-		nw_dvHTML.push(chn[i]);
+		if(!pushed){nw_dvHTML.push(chn[i]);}
 		nw_dvHTML.push(document.createElement('BR'));
 		pushed=true;
 		}
-		if(i>0 && chn[i-1].nodeName!=="BR"){
-		nw_dvHTML.push(document.createElement('BR'));
-		nw_dvHTML.push(chn[i]);
-		pushed=true;
-		}
+		
 		if(!pushed){
 		nw_dvHTML.push(chn[i]);	
 		}
