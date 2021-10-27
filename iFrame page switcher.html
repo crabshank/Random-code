@@ -1,0 +1,175 @@
+<html>
+
+<head>
+</head>
+
+<body>
+<title>iFrame page switcher</title>
+<h1 style="text-align: center !important;margin-bottom: 0.6ch !important;">iFrame page switcher</h1>
+<section style="display: flex !important; flex-wrap: wrap !important;">
+<button style="background-color: buttonface !important;" type="button">Clear</button>
+<textarea style="width: 95% !important; background-color: buttonface !important;" title="Input URLs one per line!"></textarea><br><br>
+<button style="background-color: buttonface !important;" type="button">←</button>
+<button style="background-color: buttonface !important;" type="button">→</button><br>
+</section>
+<iframe style="width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important; height: 83vh !important;" allowfullscreen></iframe><br><br>
+
+
+<script>
+function removeEls(d, array){
+	var newArray = [];
+	for (let i = 0; i < array.length; i++)
+	{
+		if (array[i] != d)
+		{
+			newArray.push(array[i]);
+		}
+	}
+	return newArray;
+}
+
+function elRemover(el){
+	if(typeof el!=='undefined' && !!el){
+	if(typeof el.parentNode!=='undefined' && !!el.parentNode){
+		el.parentNode.removeChild(el);
+	}
+	}
+}
+
+var lkIx=0;
+
+let sct=[...document.getElementsByTagName('SECTION')];
+
+	let u=sct[0].children[1];
+	let f=[...document.getElementsByTagName('IFRAME')][0];
+	let bts=[...document.getElementsByTagName('BUTTON')];
+	let b=bts[0];
+	let bb=bts[1];
+	let bf=bts[2];
+b.onclick=function(){
+	u.value="";
+	[...sct[0].getElementsByTagName('A')].forEach((lk)=>{
+			elRemover(lk);
+	});
+	f.src="";
+}
+
+function backChg(back){
+	if(back){
+		let lks=[...sct[0].getElementsByTagName('A')];
+		lkIx=(lkIx-1>=0)?lkIx-1:0;
+		if(f.src!=lks[lkIx].href){
+			f.src=lks[lkIx].href;
+		}
+
+		lks.forEach((lk)=>{
+			lk.style.setProperty('color','#167ac6','important');
+			lk.style.setProperty('font-weight','initial','important');
+		});
+		lks[lkIx].style.setProperty('color','#9043cc','important');
+		lks[lkIx].style.setProperty('font-weight','bolder','important');
+	}else{
+		let lks=[...sct[0].getElementsByTagName('A')];
+		lkIx=(lkIx+1<lks.length)?lkIx+1:lks.length-1;
+		if(f.src!=lks[lkIx].href){
+			f.src=lks[lkIx].href;
+		}
+
+		lks.forEach((lk)=>{
+			lk.style.setProperty('color','#167ac6','important');
+			lk.style.setProperty('font-weight','initial','important');
+		});
+		lks[lkIx].style.setProperty('color','#9043cc','important');
+		lks[lkIx].style.setProperty('font-weight','bolder','important');
+
+	}
+}
+
+bf.onclick=function(){
+backChg(false);
+}
+
+bb.onclick=function(){
+backChg(true);
+}
+
+u.oninput= function(){
+	let lstChk = u.value.split('\n');
+	let validate=[];
+	let out=null;
+	lstChk = removeEls("", lstChk);
+
+	for (let i = 0; i < lstChk.length; i++)
+	{
+		validate[i]=true;
+		if (lstChk[i].split('/').length == 1)
+		{
+			//console.log(lstChk[i] + ' is valid!');
+		}
+		else
+		{
+
+			if (lstChk[i].split('://')[0] == "")
+			{
+				console.warn(lstChk[i] + ' is invalid');
+				validate[i] = false;
+			}
+
+			if (lstChk[i].split('://')[lstChk[i].split('://').length + 1] == "")
+			{
+				console.warn(lstChk[i] + ' is invalid');
+				validate[i] = false;
+			}
+
+			/*if (lstChk[i].split('://').join('').split('/').length !== removeEls("", lstChk[i].split('://').join('').split('/')).length)
+			{
+				console.warn(lstChk[i] + ' is invalid');
+				validate[i] = false;
+			}*/
+
+		}
+		if(i==0){
+		[...sct[0].getElementsByTagName('A')].forEach((lk)=>{
+			elRemover(lk);
+		});
+		}
+		if (validate[i]){
+			let lnk=document.createElement('A');
+			lnk.setAttribute('linkIx',i);
+			lnk.href=lstChk[i];
+			lnk.innerText=lstChk[i];
+			lnk.style.setProperty('color','167ac6','important');
+			//lnk.style.setProperty('margin-left','1ch','important');
+			lnk.style.setProperty('margin-right','1ch','important');
+				lnk.onclick=(e)=>{
+					e.preventDefault();
+					lkIx=parseInt(e.target.getAttribute('linkIx'));
+					if(f.src!=e.target.href){
+						f.src=e.target.href;
+					}
+					[...sct[0].getElementsByTagName('A')].forEach((lk)=>{
+						lk.style.setProperty('color','#167ac6','important');
+						lk.style.setProperty('font-weight','initial','important');
+					});
+					e.target.style.setProperty('color','#9043cc','important');
+					e.target.style.setProperty('font-weight','bolder','important');
+				}
+			sct[0].appendChild(lnk);
+			if(!out){
+			out=lnk;
+			lkIx=i;
+			}
+		}
+	}
+	
+	if(!!out && f.src!=out.href){
+	f.src=out.href;
+	out.style.setProperty('color','#9043cc','important');
+	out.style.setProperty('font-weight','bolder','important');
+	}
+}
+</script>
+
+</body>
+
+</html>
