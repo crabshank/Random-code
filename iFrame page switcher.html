@@ -101,6 +101,7 @@ u.oninput= function(){
 
 	for (let i = 0; i < lstChk.length; i++)
 	{
+		lstChk[i]=lstChk[i].trim();
 		validate[i]=true;
 		if (lstChk[i].split('/').length == 1)
 		{
