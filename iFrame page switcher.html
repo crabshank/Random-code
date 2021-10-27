@@ -8,10 +8,11 @@
 <h1 style="text-align: center !important;margin-bottom: 0.6ch !important;">iFrame page switcher</h1>
 <section style="display: flex !important; flex-wrap: wrap !important;">
 <button style="background-color: buttonface !important;" type="button">Clear</button>
-<textarea style="width: 95% !important; background-color: buttonface !important;" title="Input URLs one per line!"></textarea><br><br>
+<textarea style="width: 98.7% !important; background-color: buttonface !important;" title="Input URLs one per line!"></textarea><br><br>
 <button style="background-color: buttonface !important;" type="button">←</button>
 <button style="background-color: buttonface !important;" type="button">→</button><br>
 </section>
+<section style="width: 98.7% !important; resize: vertical !important; overflow-y: scroll !important; display: flex !important; flex-direction: column !important; overflow-wrap: anywhere !important;"></section>
 <iframe style="width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important; height: 83vh !important;" allowfullscreen></iframe><br><br>
 
 
@@ -48,17 +49,20 @@ let sct=[...document.getElementsByTagName('SECTION')];
 	let bf=bts[2];
 b.onclick=function(){
 	u.value="";
-	[...sct[0].getElementsByTagName('A')].forEach((lk)=>{
+	[...sct[1].getElementsByTagName('A')].forEach((lk)=>{
 			elRemover(lk);
 	});
 	f.src="";
 }
 
-function backChg(back){
+function backChg(back,e){
+	e.stopPropagation();
+	e.preventDefault();
 	if(back){
-		let lks=[...sct[0].getElementsByTagName('A')];
+		let lks=[...sct[1].getElementsByTagName('A')];
 		lkIx=(lkIx-1>=0)?lkIx-1:0;
 		if(f.src!=lks[lkIx].href){
+			lks[lkIx].scrollIntoView();
 			f.src=lks[lkIx].href;
 		}
 
@@ -69,9 +73,10 @@ function backChg(back){
 		lks[lkIx].style.setProperty('color','#9043cc','important');
 		lks[lkIx].style.setProperty('font-weight','bolder','important');
 	}else{
-		let lks=[...sct[0].getElementsByTagName('A')];
+		let lks=[...sct[1].getElementsByTagName('A')];
 		lkIx=(lkIx+1<lks.length)?lkIx+1:lks.length-1;
 		if(f.src!=lks[lkIx].href){
+			lks[lkIx].scrollIntoView();
 			f.src=lks[lkIx].href;
 		}
 
@@ -85,12 +90,12 @@ function backChg(back){
 	}
 }
 
-bf.onclick=function(){
-backChg(false);
+bf.onclick=function(e){
+backChg(false,e);
 }
 
-bb.onclick=function(){
-backChg(true);
+bb.onclick=function(e){
+backChg(true,e);
 }
 
 u.oninput= function(){
@@ -130,7 +135,7 @@ u.oninput= function(){
 
 		}
 		if(i==0){
-		[...sct[0].getElementsByTagName('A')].forEach((lk)=>{
+		[...sct[1].getElementsByTagName('A')].forEach((lk)=>{
 			elRemover(lk);
 		});
 		}
@@ -143,19 +148,20 @@ u.oninput= function(){
 			//lnk.style.setProperty('margin-left','1ch','important');
 			lnk.style.setProperty('margin-right','1ch','important');
 				lnk.onclick=(e)=>{
+					e.stopPropagation();
 					e.preventDefault();
 					lkIx=parseInt(e.target.getAttribute('linkIx'));
 					if(f.src!=e.target.href){
 						f.src=e.target.href;
 					}
-					[...sct[0].getElementsByTagName('A')].forEach((lk)=>{
+					[...sct[1].getElementsByTagName('A')].forEach((lk)=>{
 						lk.style.setProperty('color','#167ac6','important');
 						lk.style.setProperty('font-weight','initial','important');
 					});
 					e.target.style.setProperty('color','#9043cc','important');
 					e.target.style.setProperty('font-weight','bolder','important');
 				}
-			sct[0].appendChild(lnk);
+			sct[1].appendChild(lnk);
 			if(!out){
 			out=lnk;
 			lkIx=i;
