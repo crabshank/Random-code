@@ -17,6 +17,10 @@
 
 
 <script>
+window.addEventListener('beforeunload', function (e) {
+e.returnValue = '';
+});
+
 function removeEls(d, array){
 	var newArray = [];
 	for (let i = 0; i < array.length; i++)
