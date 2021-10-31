@@ -1,0 +1,1077 @@
+<html>
+
+<head>
+<meta charset="utf-8"/>
+<style>
+blockquote{
+display: inline-flex;
+margin: 0px;
+}
+div#en{
+direction: ltr;
+position: absolute;
+margin-left: 50%;
+text-align: left;
+font-size: 185%;
+min-width: 50%;
+min-height: -webkit-fill-available;
+min-height: -moz-available;
+max-width: 50%;
+word-break: break-word;
+white-space: pre-wrap;
+}
+textarea{
+direction: rtl; 
+text-align: right;
+font-family: -webkit-pictograph;
+font-size: 551%;
+box-shadow: 0 0 0px 2px black;
+border-width: 0px;
+min-width: -webkit-fill-available;
+min-width: -moz-available;
+min-height: 200%;
+height: 200%;
+max-width: 50%;
+-webkit-user-modify: read-write-plaintext-only;
+-moz-user-modify: read-write;
+transform: scaleX(0.5) scaleY(0.5) translateX(-50%) translateY(-50%);
+}
+ruby{
+text-align: center;
+}
+ruby:hover{
+ color: hsl(235deg 100% 50%);
+}
+ruby > hr{
+display: table;
+unicode-bidi: unset;
+margin-block-start: 3ch;
+margin-block-end: 0.5ch;
+margin-inline-start: unset;
+margin-inline-end: unset;
+overflow: overlay;
+border-style: none;
+border-width: 0;
+}
+ruby > rt{
+font-family: -webkit-pictograph;
+font-size: 126%;
+}
+button#dict {
+background-color: buttonface;
+position: absolute;
+left: 50.35%;
+}
+h1{
+text-align: center;
+}
+</style>
+<title>Arabic transliteration page</title>
+</head>
+	
+<body>
+</style>
+<h1>Arabic transliteration page</h1>
+<textarea id="og"></textarea>
+<button id="dict">Dictionary form</button>
+<div id="en"></div>
+<script>
+
+var en_HTML='';
+var en_dct_HTML='';
+var tl_HTML='';
+
+var vwl=[378,
+379,
+1560,
+1561,
+1562,
+1611,
+1612,
+1613,
+1614,
+1615,
+1616,
+1617,
+1618,
+1619,
+1620,
+1621,
+1761,
+1764,
+1770,
+2276,
+2277,
+2278,
+2279,
+2280,
+2281,
+2288,
+2289,
+2290,
+3787,
+64607,
+65136,
+65137,
+65138,
+65142,
+65143,
+65144,
+65145,
+65146,
+65147,
+65148,
+65149,
+65150,
+65151];
+
+var trlr=[[1536,'#'],
+[1538,'†'],
+[1542,'∛'],
+[1543,'∜'],
+[1545,'‰'],
+[1546,'‱'],
+[1548,','],
+[1549,'/'],
+[1563,';'],
+[1566,'.'],
+[1567,'?'],
+[1569,"'"],
+[1570,"'ā"],
+[1571,"'"],
+[1572,"'u"],
+[1573,"'i"],
+[1574,"'"],
+[1575,'ā'],
+[1576,'b'],
+[1577,'-ah'],
+[1578,'t'],
+[1579,'th'],
+[1580,'j'],
+[1581,'ḥ'],
+[1582,'kh'],
+[1583,'d'],
+[1584,'th'],
+[1585,'r'],
+[1586,'z'],
+[1587,'s'],
+[1588,'sh'],
+[1589,'ṣ'],
+[1590,'ḍ'],
+[1591,'ṭ'],
+[1592,'ẓ'],
+[1593,'ʿ'],
+[1594,'gh'],
+[1601,'f'],
+[1602,'q'],
+[1603,'k'],
+[1604,'l'],
+[1605,'m'],
+[1606,'n'],
+[1607,'h'],
+[1608,'w'],
+[1609,'ā'],
+[1610,'y'],
+[1611,'an'],
+[1612,'un'],
+[1613,'in'],
+[1633,'1'],
+[1634,'2'],
+[1635,'3'],
+[1636,'4'],
+[1637,'5'],
+[1638,'6'],
+[1639,'7'],
+[1640,'8'],
+[1641,'9'],
+[1642,'%'],
+[1643,'.'],
+[1644,','],
+[1645,'*'],
+[1646,'b'],
+[1647,'q'],
+[1648,'ā'],
+[1649,'-'],
+[1662,'p'],
+[1670,'zh'],
+[1691,'s'],
+[1692,'ch'],
+[1698,'f'],
+[1700,'v'],
+[1701,'v'],
+[1703,'q'],
+[1706,'k'],
+[1748,'.'],
+[1750,"'"],
+[1751,"'"],
+[1752,"'"],
+[1777,'1'],
+[1778,'2'],
+[1779,'3'],
+[1780,'4'],
+[1781,'5'],
+[1782,'6'],
+[1783,'7'],
+[1784,'8'],
+[1785,'9'],
+[2279,'an'],
+[2280,'un'],
+[2281,'in'],
+[2288,'an'],
+[2289,'un'],
+[2290,'in'],
+[64337,'-'],
+[64342,'p'],
+[64343,'p'],
+[64344,'p'],
+[64345,'p'],
+[64362,'v'],
+[64363,'v'],
+[64364,'v'],
+[64365,'v'],
+[64378,'zh'],
+[64379,'zh'],
+[64380,'zh'],
+[64381,'zh'],
+[64478,'v'],
+[64479,'v'],
+[64490,'yā'],
+[64491,'yā'],
+[64494,'yw'],
+[64495,'yw'],
+[64512,'yj'],
+[64513,'yḥ'],
+[64514,'ym'],
+[64515,'yā'],
+[64516,'yy'],
+[64517,'bj'],
+[64518,'bḥ'],
+[64519,'bkh'],
+[64520,'bm'],
+[64521,'bā'],
+[64522,'by'],
+[64523,'tj'],
+[64524,'tḥ'],
+[64525,'tkh'],
+[64526,'tm'],
+[64527,'tā'],
+[64528,'ty'],
+[64529,'thj'],
+[64530,'thm'],
+[64531,'thā'],
+[64532,'thy'],
+[64533,'jḥ'],
+[64534,'jm'],
+[64535,'ḥj'],
+[64536,'ḥm'],
+[64537,'khj'],
+[64538,'khḥ'],
+[64539,'khm'],
+[64540,'sj'],
+[64541,'sḥ'],
+[64542,'skh'],
+[64543,'sm'],
+[64544,'ṣḥ'],
+[64545,'ṣm'],
+[64546,'ḍj'],
+[64547,'ḍḥ'],
+[64548,'ḍkh'],
+[64549,'ḍm'],
+[64550,'tḥ'],
+[64551,'tm'],
+[64552,'ẓm'],
+[64553,'ʿj'],
+[64554,'ʿm'],
+[64555,'ghj'],
+[64556,'ghm'],
+[64557,'fj'],
+[64558,'fḥ'],
+[64559,'fkh'],
+[64560,'fm'],
+[64561,'fā'],
+[64562,'fy'],
+[64563,'qḥ'],
+[64564,'qm'],
+[64565,'qā'],
+[64566,'qy'],
+[64567,'kā'],
+[64568,'kj'],
+[64569,'kḥ'],
+[64570,'kkh'],
+[64571,'kl'],
+[64572,'km'],
+[64573,'kā'],
+[64574,'ky'],
+[64575,'lj'],
+[64576,'lḥ'],
+[64577,'lkh'],
+[64578,'lm'],
+[64579,'lā'],
+[64580,'ly'],
+[64581,'mj'],
+[64582,'mḥ'],
+[64583,'mkh'],
+[64584,'mm'],
+[64585,'mā'],
+[64586,'my'],
+[64587,'nj'],
+[64588,'nḥ'],
+[64589,'nkh'],
+[64590,'nm'],
+[64591,'nā'],
+[64592,'ny'],
+[64593,'ḥj'],
+[64594,'ḥm'],
+[64595,'hā'],
+[64596,'hy'],
+[64597,'yj'],
+[64598,'yḥ'],
+[64599,'ykh'],
+[64600,'ym'],
+[64601,'yā'],
+[64602,'yy'],
+[64603,'thā'],
+[64604,'rā'],
+[64605,'āā'],
+[64612,'yr'],
+[64613,'yz'],
+[64614,'ym'],
+[64615,'yn'],
+[64616,'yā'],
+[64617,'yy'],
+[64618,'br'],
+[64619,'bz'],
+[64620,'bm'],
+[64621,'bn'],
+[64622,'bā'],
+[64623,'by'],
+[64624,'tr'],
+[64625,'tz'],
+[64626,'tm'],
+[64627,'tn'],
+[64628,'tā'],
+[64629,'ty'],
+[64630,'thr'],
+[64631,'thz'],
+[64632,'thm'],
+[64633,'thn'],
+[64634,'thā'],
+[64635,'thy'],
+[64636,'fā'],
+[64637,'fy'],
+[64638,'qā'],
+[64639,'qy'],
+[64640,'kā'],
+[64641,'kl'],
+[64642,'km'],
+[64643,'kā'],
+[64644,'ky'],
+[64645,'lm'],
+[64646,'lā'],
+[64647,'ly'],
+[64648,'mā'],
+[64649,'mm'],
+[64650,'nr'],
+[64651,'nz'],
+[64652,'nm'],
+[64653,'nn'],
+[64654,'nā'],
+[64655,'ny'],
+[64656,'āā'],
+[64657,'yr'],
+[64658,'yz'],
+[64659,'ym'],
+[64660,'yn'],
+[64661,'yā'],
+[64662,'yy'],
+[64663,'yj'],
+[64664,'yḥ'],
+[64665,'ykh'],
+[64666,'ym'],
+[64667,'yḥ'],
+[64668,'bj'],
+[64669,'bḥ'],
+[64670,'bkh'],
+[64671,'bm'],
+[64672,'bḥ'],
+[64673,'tj'],
+[64674,'tḥ'],
+[64675,'tkh'],
+[64676,'tm'],
+[64677,'tḥ'],
+[64678,'thm'],
+[64679,'jḥ'],
+[64680,'jm'],
+[64681,'ḥj'],
+[64682,'ḥm'],
+[64683,'khj'],
+[64684,'khm'],
+[64685,'sj'],
+[64686,'sḥ'],
+[64687,'skh'],
+[64688,'sm'],
+[64689,'ṣḥ'],
+[64690,'ṣkh'],
+[64691,'ṣm'],
+[64692,'ḍj'],
+[64693,'ḍḥ'],
+[64694,'ḍkh'],
+[64695,'ḍm'],
+[64696,'tḥ'],
+[64697,'ẓm'],
+[64698,'ʿj'],
+[64699,'ʿm'],
+[64700,'ghj'],
+[64701,'ghm'],
+[64702,'fj'],
+[64703,'fḥ'],
+[64704,'fkh'],
+[64705,'fm'],
+[64706,'qḥ'],
+[64707,'qm'],
+[64708,'kj'],
+[64709,'kḥ'],
+[64710,'kkh'],
+[64711,'kl'],
+[64712,'km'],
+[64713,'lj'],
+[64714,'lḥ'],
+[64715,'lkh'],
+[64716,'lm'],
+[64717,'lḥ'],
+[64718,'mj'],
+[64719,'mḥ'],
+[64720,'mkh'],
+[64721,'mm'],
+[64722,'nj'],
+[64723,'nḥ'],
+[64724,'nkh'],
+[64725,'nm'],
+[64726,'nḥ'],
+[64727,'ḥj'],
+[64728,'ḥm'],
+[64729,'hā'],
+[64730,'yj'],
+[64731,'yḥ'],
+[64732,'ykh'],
+[64733,'ym'],
+[64734,'yḥ'],
+[64735,'ym'],
+[64736,'yh'],
+[64737,'bm'],
+[64738,'bh'],
+[64739,'tm'],
+[64740,'th'],
+[64741,'thm'],
+[64742,'thh'],
+[64743,'sm'],
+[64744,'sh'],
+[64745,'shm'],
+[64746,'shh'],
+[64747,'kl'],
+[64748,'km'],
+[64749,'lm'],
+[64750,'nm'],
+[64751,'nh'],
+[64752,'ym'],
+[64753,'yh'],
+[64757,'tā'],
+[64758,'ty'],
+[64759,'ʿā'],
+[64760,'ʿy'],
+[64761,'ghā'],
+[64762,'ghy'],
+[64763,'sā'],
+[64764,'sy'],
+[64765,'shā'],
+[64766,'shy'],
+[64767,'hā'],
+[64768,'hy'],
+[64769,'jā'],
+[64770,'jy'],
+[64771,'khā'],
+[64772,'khy'],
+[64773,'ṣā'],
+[64774,'ṣy'],
+[64775,'ḍā'],
+[64776,'ḍy'],
+[64777,'shj'],
+[64778,'shḥ'],
+[64779,'shkh'],
+[64780,'shm'],
+[64781,'shr'],
+[64782,'sr'],
+[64783,'ṣr'],
+[64784,'ḍr'],
+[64785,'tā'],
+[64786,'ty'],
+[64787,'ʿā'],
+[64788,'ʿy'],
+[64789,'ghā'],
+[64790,'ghy'],
+[64791,'sā'],
+[64792,'sy'],
+[64793,'shā'],
+[64794,'shy'],
+[64795,'ḥā'],
+[64796,'ḥy'],
+[64797,'jā'],
+[64798,'jy'],
+[64799,'khā'],
+[64800,'khy'],
+[64801,'ṣā'],
+[64802,'ṣy'],
+[64803,'ḍā'],
+[64804,'ḍy'],
+[64805,'shj'],
+[64806,'shḥ'],
+[64807,'shkh'],
+[64808,'shm'],
+[64809,'shr'],
+[64810,'sr'],
+[64811,'ṣr'],
+[64812,'ḍr'],
+[64813,'shj'],
+[64814,'shḥ'],
+[64815,'shkh'],
+[64816,'shm'],
+[64817,'sḥ'],
+[64818,'shḥ'],
+[64819,'tm'],
+[64820,'sj'],
+[64821,'sh'],
+[64822,'skh'],
+[64823,'shj'],
+[64824,'shh'],
+[64825,'shkh'],
+[64826,'tm'],
+[64827,'ẓm'],
+[64830,')'],
+[64831,'('],
+[64848,'tjm'],
+[64849,'tḥj'],
+[64850,'tḥj'],
+[64851,'tḥm'],
+[64852,'tkhm'],
+[64853,'tmj'],
+[64854,'tmḥ'],
+[64855,'tmkh'],
+[64856,'jmḥ'],
+[64857,'jmḥ'],
+[64858,'ḥmy'],
+[64859,'ḥmā'],
+[64860,'sḥj'],
+[64861,'sjḥ'],
+[64862,'sjā'],
+[64863,'smḥ'],
+[64864,'smḥ'],
+[64865,'smj'],
+[64866,'smm'],
+[64867,'smm'],
+[64868,'ṣḥḥ'],
+[64869,'ṣḥḥ'],
+[64870,'ṣmm'],
+[64871,'shḥm'],
+[64872,'shḥm'],
+[64873,'shjy'],
+[64874,'shmkh'],
+[64875,'shmkh'],
+[64876,'shmm'],
+[64877,'shmm'],
+[64878,'ḍḥā'],
+[64879,'ḍkhm'],
+[64880,'ḍkhm'],
+[64881,'ṭmḥ'],
+[64882,'tmḥ'],
+[64883,'ṭmm'],
+[64884,'ṭmy'],
+[64885,'ʿjm'],
+[64886,'ʿmm'],
+[64887,'ʿmm'],
+[64888,'ʿmā'],
+[64889,'ghmm'],
+[64890,'ghmy'],
+[64891,'ghmā'],
+[64892,'fkhm'],
+[64893,'fkhm'],
+[64894,'qmḥ'],
+[64895,'qmm'],
+[64896,'lḥm'],
+[64897,'lḥy'],
+[64898,'lḥā'],
+[64899,'ljj'],
+[64900,'ljj'],
+[64901,'lkhm'],
+[64902,'lkhm'],
+[64903,'lmḥ'],
+[64904,'lmḥ'],
+[64905,'mḥj'],
+[64906,'mḥm'],
+[64907,'mḥy'],
+[64908,'mjḥ'],
+[64909,'mjm'],
+[64910,'mkhj'],
+[64911,'mkhm'],
+[64914,'mjkh'],
+[64915,'hmj'],
+[64916,'hmm'],
+[64917,'nḥm'],
+[64918,'nḥā'],
+[64919,'njm'],
+[64920,'njm'],
+[64921,'njā'],
+[64922,'nmy'],
+[64923,'nmā'],
+[64924,'ymm'],
+[64925,'ymm'],
+[64926,'bkhy'],
+[64927,'tjy'],
+[64928,'tjā'],
+[64929,'tkhy'],
+[64930,'tkhā'],
+[64931,'ṭmy'],
+[64932,'tmā'],
+[64933,'jmy'],
+[64934,'jḥā'],
+[64935,'jmā'],
+[64936,'skhā'],
+[64937,'ṣḥy'],
+[64938,'shḥy'],
+[64939,'ḍḥy'],
+[64940,'ljy'],
+[64941,'lmy'],
+[64942,'yḥy'],
+[64943,'yjy'],
+[64944,'ymy'],
+[64945,'mmy'],
+[64946,'qmy'],
+[64947,'nḥy'],
+[64948,'qmḥ'],
+[64949,'lḥm'],
+[64950,'ʿmy'],
+[64951,'kmy'],
+[64952,'njḥ'],
+[64953,'mkhy'],
+[64954,'ljm'],
+[64955,'kmm'],
+[64956,'ljm'],
+[64957,'njḥ'],
+[64958,'jḥy'],
+[64959,'ḥjy'],
+[64960,'mjy'],
+[64961,'fmy'],
+[64962,'bḥy'],
+[64963,'kmm'],
+[64964,'ʿjm'],
+[64965,'ṣmm'],
+[64966,'skhy'],
+[64967,'njy'],
+[65010,'Allāh'],
+[65011,'akbar'],
+[65012,'Muḥammad'],
+[65013,'Salam'],
+[65014,'rasūl'],
+[65015,'ʿalayhi'],
+[65016,'wa-sallam'],
+[65017,'ṣallā'],
+[65018,'Sallā-llāhu ʿalayhī wa-ʾālihī wa-sallam'],
+[65019,'Jalla jalaluhu'],
+[65020,'riyāl'],
+[65021,'bi-smi llāh ar-raḥmān ar-raḥīm'],
+[65136,'an'],
+//[65137,'an'],
+[65138,'un'],
+[65140,'in'],
+[65152,"'"],
+[65153,"'ā"],
+[65154,"'ā"],
+[65155,"'"],
+[65156,"'"],
+[65157,"'u"],
+[65158,"'u"],
+[65159,"'i"],
+[65160,"'i"],
+[65161,"'"],
+[65162,"'"],
+[65163,"'"],
+[65164,"'"],
+[65165,'ā'],
+[65166,'ā'],
+[65167,'b'],
+[65168,'b'],
+[65169,'b'],
+[65170,'b'],
+[65171,'-ah'],
+[65172,'-ah'],
+[65173,'t'],
+[65174,'t'],
+[65175,'t'],
+[65176,'t'],
+[65177,'th'],
+[65178,'th'],
+[65179,'th'],
+[65180,'th'],
+[65181,'j'],
+[65182,'j'],
+[65183,'j'],
+[65184,'j'],
+[65185,'ḥ'],
+[65186,'ḥ'],
+[65187,'ḥ'],
+[65188,'ḥ'],
+[65189,'kh'],
+[65190,'kh'],
+[65191,'kh'],
+[65192,'kh'],
+[65193,'d'],
+[65194,'d'],
+[65195,'th'],
+[65196,'th'],
+[65197,'r'],
+[65198,'r'],
+[65199,'z'],
+[65200,'z'],
+[65201,'s'],
+[65202,'s'],
+[65203,'s'],
+[65204,'s'],
+[65205,'sh'],
+[65206,'sh'],
+[65207,'sh'],
+[65208,'sh'],
+[65209,'ṣ'],
+[65210,'ṣ'],
+[65211,'ṣ'],
+[65212,'ṣ'],
+[65213,'ḍ'],
+[65214,'ḍ'],
+[65215,'ḍ'],
+[65216,'ḍ'],
+[65217,'t'],
+[65218,'t'],
+[65219,'t'],
+[65220,'t'],
+[65221,'ẓ'],
+[65222,'ẓ'],
+[65223,'ẓ'],
+[65224,'ẓ'],
+[65225,'ʿ'],
+[65226,'ʿ'],
+[65227,'ʿ'],
+[65228,'ʿ'],
+[65229,'gh'],
+[65230,'gh'],
+[65231,'gh'],
+[65232,'gh'],
+[65233,'f'],
+[65234,'f'],
+[65235,'f'],
+[65236,'f'],
+[65237,'q'],
+[65238,'q'],
+[65239,'q'],
+[65240,'q'],
+[65241,'k'],
+[65242,'k'],
+[65243,'k'],
+[65244,'k'],
+[65245,'l'],
+[65246,'l'],
+[65247,'l'],
+[65248,'l'],
+[65249,'m'],
+[65250,'m'],
+[65251,'m'],
+[65252,'m'],
+[65253,'n'],
+[65254,'n'],
+[65255,'n'],
+[65256,'n'],
+[65257,'ḥ'],
+[65258,'ḥ'],
+[65259,'ḥ'],
+[65260,'ḥ'],
+[65261,'w'],
+[65262,'w'],
+[65263,'ā'],
+[65264,'ā'],
+[65265,'y'],
+[65266,'y'],
+[65267,'y'],
+[65268,'y'],
+[65269,'lā'],
+[65270,'lā'],
+[65271,"lā'ā"],
+[65272,"lā'ā"],
+[65273,"lā'ā"],
+[65274,"lā'ā"],
+[65275,'lā'],
+[65276,'lā']];
+
+var yeh= [65266,65267,65268,65265,1610];
+var waw= [1608,65261,65262];
+var madda= [1764,1619];
+var fatha= [1560,1614,2276,65142,65143];
+var kasra= [1562,1616,2278,65146,65147];
+var sukun= [1618,65150,65151];
+var damma= [1561,1615,2277,65144,65145];
+var shadda= [1617,65148,65149];
+
+var asc=document.getElementById('og');
+var esc=document.getElementById('en');
+var dct=document.getElementById('dict');
+
+let ascRct=asc.getBoundingClientRect();
+dct.style.top=(ascRct.top)+'px';
+
+esc.style.top=(ascRct.top+dct.clientHeight)+'px';
+
+function find_tl(code){
+let out='';
+for(let i = 0, len=trlr.length; i < len; i++){
+if (trlr[i][0]==code){
+out=trlr[i][1];
+i=len-1;
+}
+}
+return out;
+}
+
+function check_arr(code,arr){
+return arr.includes(code);
+}
+
+asc.oninput= function() {transliterate()};
+asc.onchange= function() {transliterate()};
+dct.onclick= function() {devowel()};
+ 
+function transliterate() {
+asc.style.height = 'inherit';
+asc.style.height = (asc.scrollHeight+1)+"px";
+en_HTML='';
+en_dct_HTML='';
+tl_HTML='';
+dct.innerText="Dictionary form";
+let ar_scr=asc.value;
+let l_ar_scr_1=ar_scr.split('ﹱ').join('ً');
+let l_ar_scr_2=l_ar_scr_1.split('ـ').join('');
+let l_ar_scr_3=l_ar_scr_2.split(String.fromCharCode(8205)).join('');
+let l_ar_scr=l_ar_scr_3.split(String.fromCharCode(10));
+let spr_ar=[];
+ let rv=[];
+ let lng=l_ar_scr.length;
+ 
+ if (lng<=1){
+	  rv=[...l_ar_scr[0]].reverse();
+for(let j = 0; j<rv.length; j++) {
+  spr_ar.push(rv[j]);
+}
+}else{
+		for (let i=lng-1; i>0;i--){
+		  rv=[...l_ar_scr[i]].reverse();
+		  spr_ar.push(String.fromCharCode(10));
+		  		for(let j = 0; j<rv.length; j++) {
+				spr_ar.push(rv[j]);
+				}
+		}
+		 rv=[...l_ar_scr[0]].reverse();
+		 spr_ar.push(String.fromCharCode(10));
+		  for(let j = 0; j<rv.length; j++) {
+				spr_ar.push(rv[j]);
+				}
+				 
+	
+}
+ 
+let e_out='';
+let e_out_f=[];
+let e_out_s=[];
+let og=[];
+let og_f=[];
+let og_cnt=spr_ar.length-1;
+let i = spr_ar.length-1;
+while(i>=0){
+	e_out='';
+
+
+if((spr_ar[i].charCodeAt(0)==13)||(spr_ar[i].charCodeAt(0)==10)){
+e_out=String.fromCharCode(10);
+}else{
+	var a=spr_ar[i].charCodeAt(0);
+    let c_out=find_tl(a);
+	let b=(i-1>=0)?spr_ar[i-1].charCodeAt(0):'';
+	let c=(i-2>=0)?spr_ar[i-2].charCodeAt(0):'';
+	let d=(i-3>=0)?spr_ar[i-3].charCodeAt(0):'';
+	if((a==1575 || a==1648 || a==65165) && (check_arr(b,vwl)==true) &&  (c==1604 || c== 65245 || c==65246 || c==65248) ){
+		if(check_arr(b,fatha)==true){
+			e_out="'a";
+			i-=1;
+		}else{
+				e_out='a';
+			}
+	}else if((a==1575 || a==1648 || a==65165) &&  (b==1604 || b== 65245 || b==65246 || b==65248) ){
+		e_out='al';
+		i-=1;
+	}else if(		(check_arr(a,waw)==true)&&(check_arr(b,damma)==true)&& ((c=='')||(check_arr(c,vwl)==false))	){
+		e_out='ū';
+		i-=1;
+	}else if(	(check_arr(a,yeh)==true)&&(check_arr(b,fatha)==true)&& ((c=='')||(check_arr(c,vwl)==false))	){
+		e_out='ay';
+		i-=1;
+	}else if(	(check_arr(a,waw)==true)&&(check_arr(b,fatha)==true)&& ((c=='')||(check_arr(c,vwl)==false))	){
+		e_out='aw';
+		i-=1;
+	}else if(	(check_arr(a,yeh)==true)&&(check_arr(b,kasra)==true)&& ((c=='')||(check_arr(c,vwl)==false))	){
+		e_out='ī';
+		i-=1;
+	}else if( ((a==1571)||(a==65155)||(a==65156))&&(check_arr(b,damma)==true)&& ((c=='')||(check_arr(c,vwl)==false)) ){
+		e_out="'u";
+		i-=1;
+	}else if(	(check_arr(a,fatha)==true)&&(check_arr(b,yeh)==true)&&(check_arr(c,sukun)==true)&& ((d=='')||(check_arr(d,vwl)==false))	){
+		e_out='ay';
+		i-=2;
+	}else if(	(check_arr(a,fatha)==true)&&(check_arr(b,waw)==true)&&(check_arr(c,sukun)==true)&& ((d=='')||(check_arr(d,vwl)==false))	){
+		e_out='aw';
+		i-=2;
+	}else if( (a==1575 || a==1648 || a==65165) && (check_arr(b,kasra)==true) ){
+		e_out="'i";
+		i-=1;
+	}else if( (a==1575 || a==1648 || a==65165) && (check_arr(b,damma)==true) ){
+		e_out="'u";
+		i-=1;
+	}else{
+		
+		if(check_arr(a,shadda)==true){
+			if(i>0){
+			var l_c='';
+				for (j=i-1;j>=0;j--){
+					let cr=spr_ar[j].charCodeAt(0);
+					if(check_arr(cr,vwl)==false){
+						e_out=find_tl(cr);
+						j=0;
+					}
+				}
+			}	
+	}else if((check_arr(a,sukun)==true)||(a==1600)){
+			e_out='';		
+	}
+	else if(check_arr(a,damma)==true){
+			e_out='u';
+	}else if(check_arr(a,fatha)==true){
+			e_out='a';		
+	}else if(check_arr(a,kasra)==true){
+			e_out='i';		
+	}else if(check_arr(a,madda)==true){
+			e_out="'ā";		
+	}else{
+if (c_out==''){
+e_out=spr_ar[i];
+}else{
+e_out=c_out;
+}
+}
+}
+}
+e_out_s.push([e_out]);
+
+//i: 49 ->  47 (now)
+//og: 49 -> 49
+//normally: push 49
+//will now push: 47
+
+//so push: 49,48,47
+
+let push_this='';
+while (og_cnt>=i){
+if(og_cnt>=0){
+push_this+=spr_ar[og_cnt];
+}
+og_cnt--;
+}
+og_cnt=i;
+og.push(push_this);
+
+og_cnt--;
+i--;
+}
+
+
+let og_out_s=[...og];
+
+var s_cnt=0;
+	 var rb=[];
+	 var rt=[];
+for(let i = 0; i<og_out_s.length; i++){
+		if (typeof rb[s_cnt]=="undefined"){rb[s_cnt]='';}
+	if (typeof rt[s_cnt]=="undefined"){rt[s_cnt]='';}
+		if (typeof og_out_s[i]!=="undefined"){rt[s_cnt]+=og_out_s[i]};
+		if (typeof e_out_s[i]!=="undefined"){rb[s_cnt]+=e_out_s[i]};
+		let last_ltr=og_out_s[i].charCodeAt(Math.max(og_out_s[i].length-1,0));
+	s_cnt=(((last_ltr==32)||(last_ltr==160))||((last_ltr==13)||(last_ltr==10)))?s_cnt+1:s_cnt;
+}
+
+var ruby='<section id="ar_en_trnsl">';
+var tlOut='<section id="en_trnsl">';
+
+	for(let i = 0; i<rt.length; i++){
+		let sp_rt=[...rt[i]];
+		let sp_rb=[...rb[i]];
+		let rbt='';
+		let rtt='';
+		let last_ltr=sp_rt[Math.max(0,sp_rt.length-1)].charCodeAt(Math.max(og_out_s[i].length-1,0))
+		if (sp_rt.length>1){
+			ruby+='<ruby>';
+			tlOut+='<blockquote>';
+			rtt=sp_rt.join('');
+			rbt=sp_rb.join('');
+		ruby+='<hr><rb>'+rbt+'</rb><rt>'+rtt+'</rt></ruby>';
+		tlOut+=rbt+'</blockquote>';
+		ruby=((last_ltr==32)||(last_ltr==160))?ruby+'<blockquote>'+' '+'</blockquote>':ruby;
+		tlOut=((last_ltr==32)||(last_ltr==160))?tlOut+'<blockquote>'+' '+'</blockquote>':tlOut;
+		ruby=((last_ltr==13)||(last_ltr==10))?ruby+'<br>':ruby;
+		tlOut=((last_ltr==13)||(last_ltr==10))?tlOut+'<br>':tlOut;
+		}else if(sp_rt.length==1){
+			if ((last_ltr==32)||(last_ltr==160)){
+				ruby+='<blockquote>'+' '+'</blockquote>';
+				tlOut+='<blockquote>'+' '+'</blockquote>';
+			}
+				else if((last_ltr==13)||(last_ltr==10)){
+				ruby+='<br>';
+				tlOut+='<br>';
+			}else{
+				ruby+='<ruby><hr><rb>'+sp_rb.join('')+'</rb><rt>'+sp_rt.join('')	+'</rt></ruby>';
+				tlOut+='<blockquote>'+sp_rb.join('')+'</blockquote>';
+			}
+		}
+	}
+
+ruby+='</section>';
+tlOut+='</section>';
+esc.innerHTML=ruby+'<hr style="background: black; height: 3px; border-width: 0;">'+tlOut;
+en_HTML=ruby;
+tl_HTML=tlOut;
+}
+
+ function devowel() {
+	 if (dct.innerText=="Dictionary form"){
+		 if (en_dct_HTML==""){
+esc.innerHTML=esc.innerHTML.split(String.fromCharCode(1648)).join('');
+			 for(let i = 0; i<vwl.length; i++){
+				 esc.innerHTML=esc.innerHTML.split(String.fromCharCode(vwl[i])).join('');
+			 }
+			 en_dct_HTML=esc.innerHTML+'<hr style="background: black; height: 3px; border-width: 0;">'+tl_HTML;
+		 }else{
+			esc.innerHTML=en_dct_HTML+'<hr style="background: black; height: 3px; border-width: 0;">'+tl_HTML;
+		 }
+		 
+		 dct.innerText="Full form";
+	 }else{
+		esc.innerHTML=en_HTML+tl_HTML;
+		dct.innerText="Dictionary form";
+	 }
+	 
+ }
+ 
+</script>
+</body>
+</html>
