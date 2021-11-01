@@ -66,6 +66,7 @@ function backChg(back,e){
 		let lks=[...sct[1].getElementsByTagName('A')];
 		lkIx=(lkIx-1>=0)?lkIx-1:0;
 		if(f.src!=lks[lkIx].href){
+			sct[1].style.setProperty('height',(lks[lkIx].getBoundingClientRect().height+2)+'px','important');
 			lks[lkIx].scrollIntoView();
 			f.src=lks[lkIx].href;
 		}
@@ -80,6 +81,7 @@ function backChg(back,e){
 		let lks=[...sct[1].getElementsByTagName('A')];
 		lkIx=(lkIx+1<lks.length)?lkIx+1:lks.length-1;
 		if(f.src!=lks[lkIx].href){
+			sct[1].style.setProperty('height',(lks[lkIx].getBoundingClientRect().height+2)+'px','important');
 			lks[lkIx].scrollIntoView();
 			f.src=lks[lkIx].href;
 		}
@@ -169,6 +171,8 @@ u.oninput= function(){
 			if(!out){
 			out=lnk;
 			lkIx=i;
+			sct[1].style.setProperty('height',2*(lnk.getBoundingClientRect().height)+2+'px','important');
+			lnk.scrollIntoView();
 			}
 		}
 	}
