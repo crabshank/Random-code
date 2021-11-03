@@ -187,7 +187,7 @@ var volSd = document.getElementById('vol');
 volSd.oninput=function(event){
 synth.cancel();
 volLbl.innerText= 'Volume: '+volSd.valueAsNumber.toLocaleString('en-GB', {minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false});
-speak(currLine);
+speak(currLine.innerText,currLine.classList.contains("quote"));
 }
 
 
@@ -834,7 +834,7 @@ prv.style.setProperty("height", document.documentElement.scrollHeight+'px');
 wdth.style.height=Math.max(window.innerHeight,dv.scrollHeight)+'px';
 }
 
-function speak(line){
+function speak(line,quote){
 let vol=volSd.valueAsNumber;
 if(line!='' && vol>=0.1){
 var selectedVoice = slv.selectedOptions[0].getAttribute('data-name');
@@ -853,7 +853,7 @@ let speakText = new SpeechSynthesisUtterance(line);
 	speakText.voice = vce;
 	    // Set pitch and rate
     speakText.rate = rate;
-    speakText.pitch = pitch;
+    speakText.pitch =(quote)?0.89*pitch:pitch;
     speakText.volume = vol;
 	speakText.onend = e => {
 		if(queueLen>3){
@@ -901,9 +901,9 @@ let bef=(curr-2>0)?curr-2:0;
 sct[bef].scrollIntoView();
 if (!c.classList.contains("current")) {
 	c.classList.add("current");
-	currLine=c.innerText;
+	currLine=c;
 	if(queueLen<=2){
-	speak(currLine);
+	speak(currLine.innerText,currLine.classList.contains("quote"));
 	}else{
 	queueLen=0;
 	synth.cancel();
@@ -945,9 +945,9 @@ let bef=(curr-2>0)?curr-2:0;
 sct[bef].scrollIntoView();
 if (!c.classList.contains("current")) {
 	c.classList.add("current");
-	currLine=c.innerText;
+	currLine=c;
 	if(queueLen<=2){
-	speak(currLine);
+	speak(currLine.innerText,c.classList.contains("quote"));
 	}else{
 	queueLen=0;
 	synth.cancel();
