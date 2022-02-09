@@ -6,43 +6,51 @@
 <body>
 <title>Multiple iframes per page</title>
 <h1 style="text-align: center">Multiple iframes per page</h1>
-<section style="display: list-item !important;"><button style="background-color: buttonface !important;" type="button">Clear</button><input style="width: 95% !important; background-color: buttonface !important;" type="text"></input><iframe style="width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important; height: 86% !important;" allowfullscreen></iframe><br><br></section>
+<section class="multi_ifrms" style="display: list-item !important;"><button style="background-color: buttonface !important;" type="button">Clear</button><input style="width: 95% !important; background-color: buttonface !important;" type="text"></input><iframe style="width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important; height: 86% !important;" allowfullscreen></iframe><br><br></section>
 
 <script>
-let sct=[...document.getElementsByTagName('SECTION')];
+let sct=[...document.querySelectorAll('section.multi_ifrms')];
 
 let chk=function(sci,init){
 	let b=sci.children[0];
 	let u=sci.children[1];
 	let f=sci.children[2];
-let sct2=[...document.getElementsByTagName('SECTION')];
+let sct2=[...document.querySelectorAll('section.multi_ifrms')];
 	if (((u.value!="")&&(sct2.length==1))||((u.value!="")&&(init!=1)&&(sct2.length>1))){
-	let sc=document.createElement('section');
-	sc.style.cssText='display: list-item !important;';
-	sc.innerHTML='<button style="background-color: buttonface !important;" type="button">Clear</button><input style="width: 95% !important; background-color: buttonface !important;" type="text"></input><iframe style="width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important; height: 86% !important;" allowfullscreen></iframe><br><br>';
-	sci.insertAdjacentElement('afterend', sc);
-	sc.children[0].onclick=function(){
-	sc.children[1].value="";
-	sc.children[2].src="";
-	let tst=[...document.getElementsByTagName('SECTION')];
-	if (sc===tst[tst.length-1]){
-	chk(sc,2);
-	}else{
-	chk(sc,1);
-	}
-	}
-	sc.oninput= function(){
-	let tst=[...document.getElementsByTagName('SECTION')];
-	if (sc===tst[tst.length-1]){
-	chk(sc,0);
-	}else{
-	chk(sc,1);
-	}
-	}
+		let sc=document.createElement('section');
+		sc.innerHTML='<button style="background-color: buttonface !important;" type="button">Clear</button><input style="width: 95% !important; background-color: buttonface !important;" type="text"></input><iframe style="display: none !important; width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; height: 86% !important;" allowfullscreen></iframe><br><br>';
+		sc.className="multi_ifrms";
+		sci.insertAdjacentElement('afterend', sc);
+		
+		sc.children[0].onclick=function(){
+			sc.children[1].value="";
+			sc.children[2].src="";
+			sc.children[2].style.display="none";
+			let tst=[...document.querySelectorAll('section.multi_ifrms')];
+				if (sc===tst[tst.length-1]){
+					chk(sc,2);
+				}else{
+					chk(sc,1);
+				}
+		}	
+		
+		sc.oninput= function(){
+			let tst=[...document.querySelectorAll('section.multi_ifrms')];
+			if (sc===tst[tst.length-1]){
+				chk(sc,0);
+			}else{
+				chk(sc,1);
+			}
+		}
+	
 	}else if((u.value=="")&&(sct2.length>1)&&(init!=2)){
-	sci.remove();
+		sci.remove();
 	}
-	f.src=u.value;
+	
+	if(u.value!=''){
+		f.src=u.value;
+		f.style.display="list-item";
+	}
 }
 
 sct[0].oninput= function(){
@@ -57,7 +65,6 @@ sct[0].oninput= function(){
 	}
 	chk(sct[0],1);
 }
-
 
 </script>
 </body>
