@@ -15,18 +15,24 @@ section#js_setup * {
 	<h1 id="ttl" style="text-align: center;">File contents as .js string</h1>
     <div class="file1">
 	 <input type="file" accept=".txt" id="openFile1"><br><br>
-	<section id="js_setup" style="display: inline-flex; align-items: flex-start;">
-			  <select id="sel" style="border-width: 0px;">
-			  <option>const</option>
-			  <option>let</option>
-			  <option>var</option>
-			  </select>
-		  <input type="text" id="str_nm" style="border-width: 0px; min-width: -webkit-fill-available;">
-		 <textarea id="txt1" style="min-width: -webkit-fill-available;"></textarea>
-   </section><br>
-   <button  id="svb" style="display: none;">
-   		 <a id="sva">Save .js file</a>
-	</button>
+<section id="js_setup" style="margin-top: -0.6em;">
+<section id="js_setup_b" style="display: flex;place-items: flex-start;">
+<select id="sel" style="border-width: 0px;">
+<option>const</option>
+<option>let</option>
+<option>var</option>
+</select>
+<input type="text" id="str_nm" style="border-width: 0px;width: 30%;">
+<textarea id="txt1" style="width: 64%; "></textarea><br>
+</section>
+<section id="js_setup_c" style="position: absolute; top: 127px;">
+<button id="svb" style="display: none;">
+<a id="sva" style="text-decoration: none; color: black;">Save .js file</a>
+</button>
+<label for="dt_chk">Include date in output file?</label>
+<input type="checkbox" id="dt_chk" style="">
+</section><br>
+</section>
 </div>     
 
 <br>
@@ -35,28 +41,80 @@ section#js_setup * {
 
 var nos1=document.getElementById("txt1");
 var nm=document.getElementById("str_nm");
-var jss=document.getElementById("js_setup");
 var svrb=document.getElementById("svb");
 var svra=document.getElementById("sva");
 var sl=document.getElementById("sel");
-var str='';
+var dtChk=document.getElementById("dt_chk");
+var jssc=document.getElementById("js_setup_c");
+
+function escaper(s){
+let terms=['`','${'];
+let outs=[];
+for(let k=0, len=terms.length; k<len; k++){
+	var ix=s.indexOf(terms[k]);
+	var i = [];
+	if(ix>=0){
+		i.push([ix,ix+terms[k].length-1]);
+		let end=false;
+		while(!end){
+			ix=s.indexOf(terms[k], (i[i.length-1][0] + 1));
+			if(ix>=0){
+				i.push([ix,ix+terms[k].length-1]);
+			}else{
+				end=true;
+			}
+		}
+		outs.push(i);
+	}
+}
+	let outs_f=[];
+	let ss=[...s];
+	for(let k=0, len0=outs.length; k<len0; k++){
+		for(let j=0, len1=outs[k].length; j<len1; j++){
+			let x=outs[k][j][0];
+			if(x==0 || !ss[x-1].endsWith('\\')){
+				outs_f.push(x);
+			}
+		}
+	}
+	for(let k=0, len=outs_f.length; k<len; k++){
+		ss[outs_f[k]]='\\'+ss[outs_f[k]];
+	}
+	return ss.join('');
+}
+
+nos1.oninput=()=>{
+		nos1.style.height='min-content';
+		nos1.style.height=nos1.scrollHeight+3;
+};
+
+svra.onclick=()=>{
+		let str=nos1.value;
+		str='`'+escaper(str)+'`;';
+		nos1.value = str;
+		str=sl.value+' '+nm.value+'='+str;
+		svra.setAttribute('href', 'data:text/javascript;charset=utf-8,' + encodeURIComponent(str));
+		svra.setAttribute('download', (dtChk.checked)?nm.getAttribute('file_name_d'):nm.getAttribute('file_name'));
+};
+
+function alignBtns(){
+document.body.scrollTop = 0;
+let b=Math.max(nm.offsetTop+nm.clientHeight, sl.offsetTop+sl.clientHeight);
+jssc.style.top=(b+4)+'px';
+}
+
+alignBtns();
 
  document.getElementById("openFile1").addEventListener('change',  function () {
 	 var fr = new FileReader();
 	 fr.onload = function () {
 		nos1.style.height='min-content';
-		str = this.result;
+		let str = this.result;
 
-		str='`'+(str.split('`').join('\\`').split('${').join('\\${'))+'`;';
+		str='`'+(escaper(str))+'`;';
 		nos1.value = str;
-		str=sl.value+' '+nm.value+'='+str;
 		nos1.style.height=nos1.scrollHeight+3;
-		svrb.style.cssText='display: initial;';
-		svra.style.cssText='text-decoration: none; color: black;';
-		
-		svra.setAttribute('href', 'data:text/javascript;charset=utf-8,' + encodeURIComponent(str));
-		svra.setAttribute('download', nm.getAttribute('file_name'));
-		
+		svrb.style.cssText='display: initial;';		
 	}
 		let todate=new Date();  
 		let offset = todate.getTimezoneOffset();  
@@ -65,7 +123,8 @@ var str='';
 		
 	let n=this.files[0].name.split('.')[0];
 	nm.value=n;
-	nm.setAttribute('file_name',n+'_'+todate_f);
+	nm.setAttribute('file_name',n);
+	nm.setAttribute('file_name_d',n+'_'+todate_f);
 	fr.readAsText(this.files[0]);
 });
 
