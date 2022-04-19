@@ -72,7 +72,9 @@ for(let k=0, len=terms.length; k<len; k++){
 	for(let k=0, len0=outs.length; k<len0; k++){
 		for(let j=0, len1=outs[k].length; j<len1; j++){
 			let x=outs[k][j][0];
-			if(x==0 || !ss[x-1].endsWith('\\')){
+			if(x==0){
+				outs_f.push(x);
+			}else if(!ss[x-1].endsWith('\\')){
 				outs_f.push(x);
 			}
 		}
