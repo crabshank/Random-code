@@ -1,0 +1,76 @@
+<html>
+
+<head>
+<style>
+input[type="file" i]::-webkit-file-upload-button  {
+    background: buttonface;
+}
+section#js_setup * {
+    margin-right: 4px;
+}
+</style>
+</head>
+
+<body>
+	<h1 id="ttl" style="text-align: center;">File contents as .js string</h1>
+    <div class="file1">
+	 <input type="file" accept=".txt" id="openFile1"><br><br>
+	<section id="js_setup" style="display: inline-flex; align-items: flex-start;">
+			  <select id="sel" style="border-width: 0px;">
+			  <option>const</option>
+			  <option>let</option>
+			  <option>var</option>
+			  </select>
+		  <input type="text" id="str_nm" style="border-width: 0px; min-width: -webkit-fill-available;">
+		 <textarea id="txt1" style="min-width: -webkit-fill-available;"></textarea>
+   </section><br>
+   <button  id="svb" style="display: none;">
+   		 <a id="sva">Save .js file</a>
+	</button>
+</div>     
+
+<br>
+
+ <script src="template_literal_test_2022_04_18.js"></script>
+ <script>
+ 
+var nos1=document.getElementById("txt1");
+var nm=document.getElementById("str_nm");
+var jss=document.getElementById("js_setup");
+var svrb=document.getElementById("svb");
+var svra=document.getElementById("sva");
+var sl=document.getElementById("sel");
+var str='';
+
+ document.getElementById("openFile1").addEventListener('change',  function () {
+	 var fr = new FileReader();
+	 fr.onload = function () {
+		nos1.style.height='min-content';
+		str = this.result;
+
+		str='`'+(str.split('`').join('\\`').split('${').join('\\${'))+'`;';
+		nos1.value = str;
+		str=sl.value+' '+nm.value+'='+str;
+		nos1.style.height=nos1.scrollHeight+3;
+		svrb.style.cssText='display: initial;';
+		svra.style.cssText='text-decoration: none; color: black;';
+		
+		svra.setAttribute('href', 'data:text/javascript;charset=utf-8,' + encodeURIComponent(str));
+		svra.setAttribute('download', nm.getAttribute('file_name'));
+		
+	}
+		let todate=new Date();  
+		let offset = todate.getTimezoneOffset();  
+		todate = new Date(todate.getTime() + (offset*60000)); 
+		let todate_f=todate.toISOString().split('T')[0].split('-').join('_');
+		
+	let n=this.files[0].name.split('.')[0];
+	nm.value=n;
+	nm.setAttribute('file_name',n+'_'+todate_f);
+	fr.readAsText(this.files[0]);
+});
+
+</script>
+</body>
+
+</html>
