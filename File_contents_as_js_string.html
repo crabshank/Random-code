@@ -64,17 +64,15 @@ for(let k=0, len=terms.length; k<len; k++){
 				end=true;
 			}
 		}
-		outs.push(i);
 	}
+	outs.push(i);
 }
 	let outs_f=[];
 	let ss=[...s];
 	for(let k=0, len0=outs.length; k<len0; k++){
 		for(let j=0, len1=outs[k].length; j<len1; j++){
 			let x=outs[k][j][0];
-			if(x==0){
-				outs_f.push(x);
-			}else if(!ss[x-1].endsWith('\\')){
+			if(x==0 || !ss[x-1].endsWith('\\')){
 				outs_f.push(x);
 			}
 		}
@@ -92,7 +90,6 @@ nos1.oninput=()=>{
 
 svra.onclick=()=>{
 		let str=nos1.value;
-		str='`'+escaper(str)+'`;';
 		nos1.value = str;
 		str=sl.value+' '+nm.value+'='+str;
 		svra.setAttribute('href', 'data:text/javascript;charset=utf-8,' + encodeURIComponent(str));
