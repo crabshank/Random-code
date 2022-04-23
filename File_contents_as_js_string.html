@@ -5,16 +5,13 @@
 input[type="file" i]::-webkit-file-upload-button  {
     background: buttonface;
 }
-section#js_setup * {
-    margin-right: 4px;
-}
 </style>
 </head>
 
 <body>
 	<h1 id="ttl" style="text-align: center;">File contents as .js string</h1>
     <div class="file1">
-	 <input type="file" accept=".txt" id="openFile1"><br><br>
+	 <input type="file" id="openFile1"><br><br>
 <section id="js_setup" style="margin-top: -0.6em;">
 <section id="js_setup_b" style="display: flex;place-items: flex-start;">
 <select id="sel" style="border-width: 0px;">
@@ -22,16 +19,19 @@ section#js_setup * {
 <option>let</option>
 <option>var</option>
 </select>
-<input type="text" id="str_nm" style="border-width: 0px;width: 30%;margin-right: -8px;">
-<textarea id="txt1" style="width: 64%; margin-left: 1%;"></textarea><br>
+<input type="text" id="str_nm" style="border-width: 0px;width: 30%;margin-left: 0.17%;margin-right: 0.25%;">
+<textarea id="txt1" style="width: 64%; margin-left: 0.02%;"></textarea><br>
 </section>
-<section id="js_setup_c" style="position: absolute; top: 127px;">
+<section id="js_setup_c" style=" display: inline-flex; position: absolute; top: 16.7%;">
 <button id="svb" style="display: none;">
 <a id="sva" style="text-decoration: none; color: black;">Save .js file</a>
 </button>
+<section id="lbl">
 <label for="dt_chk">Include todays date in output file's name?</label>
-<input type="checkbox" id="dt_chk"style="margin-left: -1.35%;">
+<input type="checkbox" id="dt_chk"style="margin-left: -0.52%;">
+</section>
 </section><br>
+</section>
 </section>
 </div>     
 
@@ -46,6 +46,7 @@ var svra=document.getElementById("sva");
 var sl=document.getElementById("sel");
 var dtChk=document.getElementById("dt_chk");
 var jssc=document.getElementById("js_setup_c");
+var labl=document.getElementById("lbl");
 
 function escaper(s){
 let terms=['`','${'];
@@ -113,7 +114,14 @@ alignBtns();
 		str='`'+(escaper(str))+'`;';
 		nos1.value = str;
 		nos1.style.height=nos1.scrollHeight+3;
-		svrb.style.cssText='display: initial;';		
+		svrb.style.cssText='display: initial;';	
+			document.body.scrollTop=0;
+			document.body.scrollLeft=0;
+			let bRct=svb.getBoundingClientRect();
+			let txRct=nos1.getBoundingClientRect();
+			let lbRct=lbl.getBoundingClientRect();
+			let w=txRct.left-bRct.right;
+			labl.style.cssText='transform-origin:left center; transform: scale('+(w/lbRct.width)+');';			
 	}
 		let todate=new Date();  
 		let offset = todate.getTimezoneOffset();  
