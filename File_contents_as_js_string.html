@@ -121,7 +121,7 @@ alignBtns();
 			let txRct=nos1.getBoundingClientRect();
 			let lbRct=lbl.getBoundingClientRect();
 			let w=txRct.left-bRct.right;
-			labl.style.cssText='transform-origin:left center; transform: scale('+(w/lbRct.width)+');';			
+			labl.style.cssText='transform-origin:left center; transform: scale('+((w-3)/lbRct.width)+') translateX(3px);';			
 	}
 		let todate=new Date();  
 		let offset = todate.getTimezoneOffset();  
