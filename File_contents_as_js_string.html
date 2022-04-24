@@ -26,7 +26,7 @@ input[type="file" i]::-webkit-file-upload-button  {
 <button id="svb" style="display: none;">
 <a id="sva" style="text-decoration: none; color: black;">Save .js file</a>
 </button>
-<section id="lbl">
+<section id="lbl" style="transform-origin:left center;">
 <label for="dt_chk">Include todays date in output file's name?</label>
 <input type="checkbox" id="dt_chk"style="margin-left: -0.52%;">
 </section>
@@ -117,6 +117,7 @@ alignBtns();
 		svrb.style.cssText='display: initial;';	
 			document.body.scrollTop=0;
 			document.body.scrollLeft=0;
+			labl.style.cssText='transform-origin:left center;';			
 			let bRct=svb.getBoundingClientRect();
 			let txRct=nos1.getBoundingClientRect();
 			let lbRct=lbl.getBoundingClientRect();
