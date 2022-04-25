@@ -48,13 +48,14 @@ var dtChk=document.getElementById("dt_chk");
 var jssc=document.getElementById("js_setup_c");
 var labl=document.getElementById("lbl");
 
-function getAdjCurrDateTime(outISO){
+function getAdjCurrDateTimeOffset(outISO,offst){
+	offst=(offst==null)?0:offst;
 	let now = new Date();
-    let offset = now.getTimezoneOffset() * 60000;
+    let tz_offset = now.getTimezoneOffset() * 60000;
 	if(outISO){
-		return new Date(now.getTime() - offset).toISOString();
+		return new Date(now.getTime() - tz_offset + offst).toISOString();
 	}else{
-		return now.getTime() - offset;
+		return now.getTime() - tz_offset + offst;
 	}
 }
 
@@ -140,7 +141,7 @@ function rsz(forceShowBtn){
 		rsz(true);
 	}
 	
-	let todate_f=getAdjCurrDateTime(true).split('T')[0].split('-').join('_');
+	let todate_f=getAdjCurrDateTimeOffset(true).split('T')[0].split('-').join('_');
 		
 	let n=this.files[0].name.split('.')[0];
 	nm.value=n;
