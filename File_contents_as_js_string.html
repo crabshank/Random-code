@@ -48,14 +48,15 @@ var dtChk=document.getElementById("dt_chk");
 var jssc=document.getElementById("js_setup_c");
 var labl=document.getElementById("lbl");
 
-function getAdjCurrDateTimeOffset(outISO,offst){
-	offst=(offst==null)?0:offst;
+function getAdjCurrDateTimeOffset(outISO,ignoreTimeZones,offst){
+	offst=(typeof offst==='undefined')?0:offst;
 	let now = new Date();
-    let tz_offset = now.getTimezoneOffset() * 60000;
+    let tz_offset = (typeof ignoreTimeZones==='undefined' || !ignoreTimeZones)?now.getTimezoneOffset() * 60000:0	;
+	let t=now.getTime()- tz_offset + offst;
 	if(outISO){
-		return new Date(now.getTime() - tz_offset + offst).toISOString();
+		return new Date(t).toISOString();
 	}else{
-		return now.getTime() - tz_offset + offst;
+		return t;
 	}
 }
 
