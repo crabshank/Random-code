@@ -48,6 +48,16 @@ var dtChk=document.getElementById("dt_chk");
 var jssc=document.getElementById("js_setup_c");
 var labl=document.getElementById("lbl");
 
+function getAdjCurrDateTime(outISO){
+	let now = new Date();
+    let offset = now.getTimezoneOffset() * 60000;
+	if(outISO){
+		return new Date(now.getTime() - offset).toISOString();
+	}else{
+		return now.getTime() - offset;
+	}
+}
+
 function escaper(s){
 let terms=['`','${'];
 let outs=[];
@@ -104,30 +114,33 @@ jssc.style.top=(b+4)+'px';
 }
 
 alignBtns();
+rsz(false);
 
+function rsz(forceShowBtn){
+	nos1.style.height='min-content';
+	nos1.style.height=nos1.scrollHeight+3;
+	if(forceShowBtn){
+		svrb.style.cssText='display: initial;';	
+	}
+	document.body.scrollTop=0;
+	document.body.scrollLeft=0;
+	labl.style.cssText='transform-origin:left center;';			
+	let bRct=svrb.getBoundingClientRect();
+	let txRct=nos1.getBoundingClientRect();
+	let lbRct=lbl.getBoundingClientRect();
+	let w=txRct.left-bRct.right;
+	labl.style.cssText='transform-origin:left center; transform: scale('+((w-3)/lbRct.width)+')'+((forceShowBtn)?' translateX(3px);':';');			
+}
  document.getElementById("openFile1").addEventListener('change',  function () {
 	 var fr = new FileReader();
 	 fr.onload = function () {
-		nos1.style.height='min-content';
 		let str = this.result;
-
 		str='`'+(escaper(str))+'`;';
 		nos1.value = str;
-		nos1.style.height=nos1.scrollHeight+3;
-		svrb.style.cssText='display: initial;';	
-			document.body.scrollTop=0;
-			document.body.scrollLeft=0;
-			labl.style.cssText='transform-origin:left center;';			
-			let bRct=svb.getBoundingClientRect();
-			let txRct=nos1.getBoundingClientRect();
-			let lbRct=lbl.getBoundingClientRect();
-			let w=txRct.left-bRct.right;
-			labl.style.cssText='transform-origin:left center; transform: scale('+((w-3)/lbRct.width)+') translateX(3px);';			
+		rsz(true);
 	}
-		let todate=new Date();  
-		let offset = todate.getTimezoneOffset();  
-		todate = new Date(todate.getTime() + (offset*60000)); 
-		let todate_f=todate.toISOString().split('T')[0].split('-').join('_');
+	
+	let todate_f=getAdjCurrDateTime(true).split('T')[0].split('-').join('_');
 		
 	let n=this.files[0].name.split('.')[0];
 	nm.value=n;
