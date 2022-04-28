@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="background: #35a414;">
- <g transform="translate(.18002129)" style="fill: white;">
+<svg xmlns="http://www.w3.org/2000/svg" style="background:#35a414" version="1.1">
+ <g transform="translate(.18002129)" style="fill:#ffffff">
   <circle cx="344.78018" cy="215.88849" r="56.399384" style="paint-order:stroke fill markers;stroke-width:.0187595"/>
   <circle cx="88.979355" cy="216.59732" r="55.659718" style="fill: #35a414;paint-order:stroke fill markers;stroke-width:.0185135"/>
   <rect x="6.1370001" y="192.58911" width="15.779498" height=".73966396" style="stroke-width:0"/>
@@ -67,5 +67,7 @@
   <rect transform="scale(-1)" x="-34.15237" y="-431.77698" width="12.975496" height="6.3170214" style="fill: #35a414;paint-order:stroke fill markers;stroke-width:.00163086"/>
   <rect transform="scale(-1)" x="-669.41577" y="-431.78806" width="14.009025" height="6.3170214" style="fill: #35a414;paint-order:stroke fill markers;stroke-width:.00169457"/>
   <rect transform="scale(-1)" x="-33.812" y="-431.77698" width="13.85469" height="6.3170214" style="fill: #35a414;paint-order:stroke fill markers;stroke-width:.00168521"/>
+  <rect class="goalLine goalLine1" x="21.356895" y="193.32878" width=".73962474" height="45.119488" style="paint-order:stroke fill markers;stroke-width:.935167"/>
+  <rect class="goalLine goalLine2" x="667.82269" y="193.32872" width=".73962474" height="45.119488" style="paint-order:stroke fill markers;stroke-width:.935167"/>
  </g>
 </svg>
