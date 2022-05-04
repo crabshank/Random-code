@@ -161,6 +161,14 @@ function pDistance(x, y, x1, y1, x2, y2) {
 }
 
 window.onpointermove=(event)=>{
+dists(event);
+}
+
+window.onpointerdown=(event)=>{
+dists(event);
+}
+
+function dists(event){
 
 var svgR=absBoundingClientRect(pitch);
 var gl1R=absBoundingClientRect(gl1);
