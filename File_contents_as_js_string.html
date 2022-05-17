@@ -137,7 +137,7 @@ function rsz(forceShowBtn){
 	 var fr = new FileReader();
 	 fr.onload = function () {
 		let str = this.result;
-		str='`'+(escaper(str))+'`;';
+		str='`'+(escaper(str.split('\\').join('\\u005C')))+'`;';
 		nos1.value = str;
 		rsz(true);
 	}
