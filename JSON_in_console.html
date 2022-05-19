@@ -1,0 +1,19 @@
+ <html>
+ <head>
+ </head>
+ <body>
+ <title>Load JSON in console</title>
+ <h1 style="text-align: center;">Load JSON in console</h1>
+ <label for="openFile1">Load file: </label><input  type="file" id="openFile1" style="margin-left: 4px;vertical-align: top;"></input>
+  <script>
+ document.getElementById("openFile1").addEventListener('change',  function () {
+	 var fr = new FileReader();
+	 fr.onload = function () {
+		let str = this.result;
+		console.log(JSON.parse(this.result));
+	}
+	fr.readAsText(this.files[0]);
+}); 
+ </script>
+</body>
+</html>
