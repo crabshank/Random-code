@@ -41,6 +41,8 @@ let sct2=[...document.querySelectorAll('SECTION.multi_iframe')];
 	let t=sc.children[1];
 	if(event.inputType==="insertFromDrop"){
 		t.value=t.getAttribute('drp');
+	}else{
+		t.setAttribute('drp','');
 	}
 	let tst=[...document.querySelectorAll('SECTION.multi_iframe')];
 	if (sc===tst[tst.length-1]){
@@ -65,6 +67,8 @@ sct[0].oninput= function(event){
 	let f=sct[0].children[2];
 	if(event.inputType==="insertFromDrop"){
 		u.value=u.getAttribute('drp');
+	}else{
+		u.setAttribute('drp','');
 	}
 	b.onclick=function(){
 	u.value="";
