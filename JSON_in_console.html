@@ -10,7 +10,8 @@
 	 var fr = new FileReader();
 	 fr.onload = function () {
 		let str = this.result;
-		console.log(JSON.parse(this.result));
+		let j_str=JSON.parse(str);
+		console.log(j_str);
 	}
 	fr.readAsText(this.files[0]);
 }); 
