@@ -841,12 +841,9 @@ var selectedVoice = slv.selectedOptions[0].getAttribute('data-name');
 let rate=rterg.valueAsNumber;
 let pitch=1;
 let vce;
-voices.forEach(voice => {
-      if (voice.name === selectedVoice) {
-        vce=voice;
-      }
-    });
-
+let vix=voices.findIndex(voice => {return voice.name === selectedVoice; }); if (vix>=0){
+	vce=voices[vix];
+}
 
 let speakText = new SpeechSynthesisUtterance(line);
 		
