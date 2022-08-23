@@ -61,6 +61,7 @@ function getAdjCurrDateTimeOffset(outISO,ignoreTimeZones,offst){
 }
 
 function escaper(s){
+s=s.split('\\').join('\\u005C');
 let terms=['`','${'];
 let outs=[];
 for(let k=0, len=terms.length; k<len; k++){
@@ -137,7 +138,7 @@ function rsz(forceShowBtn){
 	 var fr = new FileReader();
 	 fr.onload = function () {
 		let str = this.result;
-		str='`'+(escaper(str.split('\\').join('\\u005C')))+'`;';
+		str='`'+(escaper(str))+'`;';
 		nos1.value = str;
 		rsz(true);
 	}
