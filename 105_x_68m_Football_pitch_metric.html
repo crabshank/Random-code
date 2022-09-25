@@ -183,11 +183,11 @@ let y2_g1=gl1R.bottom-svgR.top;
 let y1_g2=gl2R.top-svgR.top;
 let y2_g2=gl2R.bottom-svgR.top;
 
-let a=pDistance(event.layerX,event.layerY, x_g1, y1_g1, x_g1, y2_g1)*(7.32/gl1R.height);
-a=(event.layerX<gl1R.left)?-a:a;
+let a=pDistance(event.pageX,event.pageY, x_g1, y1_g1, x_g1, y2_g1)*(7.32/gl1R.height);
+a=(event.pageX<gl1R.left)?-a:a;
 
-let b=pDistance(event.layerX,event.layerY, x_g2, y2_g2, x_g2, y2_g2)*(7.32/gl2R.height);
-b=(event.layerX>gl2R.right)?-b:b;
+let b=pDistance(event.pageX,event.pageY, x_g2, y2_g2, x_g2, y2_g2)*(7.32/gl2R.height);
+b=(event.pageX>gl2R.right)?-b:b;
 
 dv.innerText='Distance to left goalline: '+a.toLocaleString('en-GB',{minimumFractionDigits: 0,	maximumFractionDigits: 3})+'m ('+(a*1.0936133).toLocaleString('en-GB',{minimumFractionDigits: 0, maximumFractionDigits: 3})+' yds)\nDistance to right goalline: '+b.toLocaleString('en-GB',{minimumFractionDigits: 0,	maximumFractionDigits: 3})+'m ('+(b*1.0936133).toLocaleString('en-GB',{minimumFractionDigits: 0, maximumFractionDigits: 3})+' yds)';
 }
