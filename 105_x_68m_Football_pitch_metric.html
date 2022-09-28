@@ -9,7 +9,7 @@
 "><section id="scoreboardSct" style="
     display: -webkit-inline-box;
     background: black;
-    margin-left: 18.85em;
+    margin-left: 32.94em;
     user-select: none;
     margin-bottom: 0.3ch;
     margin-top: -0.46ch;
@@ -27,7 +27,7 @@
     margin-right: 0.5ch;
 ">0</div><div contenteditable="true" id="an" style="
     background: mediumblue;
-">Away</div></section></section><div id="info" style="user-select: none;color: white;/* font-size: 1ch; */">Distance to left goalline: 83.869m (91.72 yds)<br>Distance to right goalline: 23.752m (25.976 yds)</div></section>
+">Away</div></section></section><div id="distInfo" style="user-select: none;color: white;margin-left: 0.2em;">Distance to left goalline: 83.869m (91.72 yds)<br>Distance to right goalline: 23.752m (25.976 yds)</div></section>
 <svg xmlns="http://www.w3.org/2000/svg" style="background:#35a414; height: -webkit-fill-available; width: -webkit-fill-available;" version="1.1" class="turf">
  <circle cx="344.96021" cy="215.88849" r="56.399384" style="fill:#fff;paint-order:stroke fill markers;stroke-width:.0187595" class="marking"/>
  <circle cx="89.159378" cy="216.59732" r="55.659718" style="fill:#35a414;paint-order:stroke fill markers;stroke-width:.0185135" class="turf"/>
@@ -101,11 +101,66 @@
 </svg>
 
 <script>
+
+function absBoundingClientRect(el){
+	let st = [window?.scrollY,
+					window?.pageYOffset,
+					el?.ownerDocument?.documentElement?.scrollTop,
+					document?.documentElement?.scrollTop,
+					document?.body?.parentNode?.scrollTop,
+					document?.body?.scrollTop,
+					document?.head?.scrollTop];
+					
+		let sl = [window?.scrollX,
+						window?.pageXOffset,
+						el?.ownerDocument?.documentElement?.scrollLeft,
+						document?.documentElement?.scrollLeft,
+						document?.body?.parentNode?.scrollLeft,
+						document?.body?.scrollLeft,
+						document?.head?.scrollLeft];
+						
+				let scrollTop=0;
+				for(let k=0; k<st.length; k++){
+					if(!!st[k] && typeof  st[k] !=='undefined' && st[k]>0){
+						scrollTop=(st[k]>scrollTop)?st[k]:scrollTop;
+					}
+				}			
+
+				let scrollLeft=0;
+				for(let k=0; k<sl.length; k++){
+					if(!!sl[k] && typeof  sl[k] !=='undefined' && sl[k]>0){
+						scrollLeft=(sl[k]>scrollLeft)?sl[k]:scrollLeft;
+					}
+				}
+	
+	const rct=el.getBoundingClientRect();
+	let r={};
+
+	r.left=rct.left+scrollLeft;
+	r.right=rct.right+scrollLeft;
+	r.top=rct.top+scrollTop;
+	r.bottom=rct.bottom+scrollTop;
+	r.height=rct.height;
+	r.width=rct.width;
+	
+	return r;
+}
+
 let pitch=document.querySelector('SVG');
-let dv=document.querySelector('div#info');
+let dv=document.querySelector('div#distInfo');
 let gl1=document.querySelector('rect.goalLine1');
 let gl2=document.querySelector('rect.goalLine2');
 let drg=null;
+let chd=[...pitch.children];
+let bpt=chd[54];
+//let hwl=chd[60];
+let bdyCh=document.body.clientHeight;
+let bdyCw=document.body.clientWidth;
+let bptR=absBoundingClientRect(bpt);
+pitch.style.transformOrigin='top left';
+let s=(bdyCw>bdyCh)?bdyCh/bptR.bottom:bdyCw/bptR.right;
+pitch.style.transform='scale('+s+')';
+
 let scoreboard={
 	board: document.getElementById('scoreboardSct'),
 	htn: document.getElementById('htm'),
