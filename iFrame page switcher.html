@@ -104,83 +104,91 @@ bb.onclick=function(e){
 backChg(true,e);
 }
 
-u.oninput= function(){
-	let lstChk = u.value.split('\n');
-	let validate=[];
-	let out=null;
-	lstChk = removeEls("", lstChk);
-
-	for (let i = 0; i < lstChk.length; i++)
-	{
-		lstChk[i]=lstChk[i].trim();
-		validate[i]=true;
-		if (lstChk[i].split('/').length == 1)
-		{
-			//console.log(lstChk[i] + ' is valid!');
-		}
-		else
-		{
-
-			if (lstChk[i].split('://')[0] == "")
-			{
-				console.warn(lstChk[i] + ' is invalid');
-				validate[i] = false;
-			}
-
-			if (lstChk[i].split('://')[lstChk[i].split('://').length + 1] == "")
-			{
-				console.warn(lstChk[i] + ' is invalid');
-				validate[i] = false;
-			}
-
-			/*if (lstChk[i].split('://').join('').split('/').length !== removeEls("", lstChk[i].split('://').join('').split('/')).length)
-			{
-				console.warn(lstChk[i] + ' is invalid');
-				validate[i] = false;
-			}*/
-
-		}
-		if(i==0){
+u.oninput= function(event){
+	if(u.value===''){
 		[...sct[1].getElementsByTagName('A')].forEach((lk)=>{
-			elRemover(lk);
+				elRemover(lk);
 		});
-		}
-		if (validate[i]){
-			let lnk=document.createElement('A');
-			lnk.setAttribute('linkIx',i);
-			lnk.href=lstChk[i];
-			lnk.innerText=lstChk[i];
-			lnk.style.setProperty('color','167ac6','important');
-			//lnk.style.setProperty('margin-left','1ch','important');
-			lnk.style.setProperty('margin-right','1ch','important');
-				lnk.onclick=(e)=>{
-					e.stopPropagation();
-					e.preventDefault();
-					lkIx=parseInt(e.target.getAttribute('linkIx'));
-					if(f.src!=e.target.href){
-						f.src=e.target.href;
-					}
-					[...sct[1].getElementsByTagName('A')].forEach((lk)=>{
-						lk.style.setProperty('color','#167ac6','important');
-						lk.style.setProperty('font-weight','initial','important');
-					});
-					e.target.style.setProperty('color','#9043cc','important');
-					e.target.style.setProperty('font-weight','bolder','important');
+		f.src="";
+	}else{
+		let lstChk = u.value.split('\n');
+		let validate=[];
+		let out=null;
+		lstChk = removeEls("", lstChk);
+
+		for (let i = 0; i < lstChk.length; i++)
+		{
+			lstChk[i]=lstChk[i].trim();
+			validate[i]=true;
+			if (lstChk[i].split('/').length == 1)
+			{
+				//console.log(lstChk[i] + ' is valid!');
+			}
+			else
+			{
+
+				if (lstChk[i].split('://')[0] == "")
+				{
+					console.warn(lstChk[i] + ' is invalid');
+					validate[i] = false;
 				}
-			sct[1].appendChild(lnk);
-			if(!out){
-			out=lnk;
-			lkIx=i;
-			sct[1].style.setProperty('height',2*(lnk.getBoundingClientRect().height)+2+'px','important');
-			lnk.scrollIntoView();
+
+				if (lstChk[i].split('://')[lstChk[i].split('://').length + 1] == "")
+				{
+					console.warn(lstChk[i] + ' is invalid');
+					validate[i] = false;
+				}
+
+				/*if (lstChk[i].split('://').join('').split('/').length !== removeEls("", lstChk[i].split('://').join('').split('/')).length)
+				{
+					console.warn(lstChk[i] + ' is invalid');
+					validate[i] = false;
+				}*/
+
+			}
+			if(i==0){
+				[...sct[1].getElementsByTagName('A')].forEach((lk)=>{
+					elRemover(lk);
+				});
+			}
+			if (validate[i]){
+				let lnk=document.createElement('A');
+				lnk.setAttribute('linkIx',i);
+				lnk.href=lstChk[i];
+				lnk.innerText=lstChk[i];
+				lnk.style.setProperty('color','167ac6','important');
+				//lnk.style.setProperty('margin-left','1ch','important');
+				lnk.style.setProperty('margin-right','1ch','important');
+					lnk.onclick=(e)=>{
+						e.stopPropagation();
+						e.preventDefault();
+						lkIx=parseInt(e.target.getAttribute('linkIx'));
+						if(f.src!=e.target.href){
+							f.src=e.target.href;
+						}
+						[...sct[1].getElementsByTagName('A')].forEach((lk)=>{
+							lk.style.setProperty('color','#167ac6','important');
+							lk.style.setProperty('font-weight','initial','important');
+						});
+						e.target.style.setProperty('color','#9043cc','important');
+						e.target.style.setProperty('font-weight','bolder','important');
+					}
+				sct[1].appendChild(lnk);
+				if(!out){
+				out=lnk;
+				lkIx=i;
+				sct[1].style.setProperty('height',2*(lnk.getBoundingClientRect().height)+2+'px','important');
+				lnk.scrollIntoView();
+				}
 			}
 		}
-	}
-	
-	if(!!out && f.src!=out.href){
-	f.src=out.href;
-	out.style.setProperty('color','#9043cc','important');
-	out.style.setProperty('font-weight','bolder','important');
+		
+		
+		if(!!out && f.src!=out.href){
+			f.src=out.href;
+			out.style.setProperty('color','#9043cc','important');
+			out.style.setProperty('font-weight','bolder','important');
+		}
 	}
 }
 </script>
