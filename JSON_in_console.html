@@ -12,7 +12,7 @@
 			for (var key in obj) {
 				if (obj.hasOwnProperty(key)) {
 					let b=obj[key];
-					let at=(anc==='')?key:' > '+key;
+					let at=`['${key}']`;
 					out.push([key,b,anc+at]);
 				}
 			}
