@@ -4,14 +4,64 @@
  <body>
  <title>Load JSON in console</title>
  <h1 style="text-align: center;">Load JSON in console</h1>
- <label for="openFile1">Load file: </label><input  type="file" id="openFile1" style="margin-left: 4px;vertical-align: top;"></input>
+ <label for="openFile1">Load file: </label><input  type="file"  id="openFile1" style="margin-left: 4px;vertical-align: top;"></input>
   <script>
+	function obj_arr(obj,anc){
+		let out=[];
+		try{
+			for (var key in obj) {
+				if (obj.hasOwnProperty(key)) {
+					let b=obj[key];
+					let at=(anc==='')?key:' > '+key;
+					out.push([key,b,anc+at]);
+				}
+			}
+		}catch(e){;}finally{
+			return out;
+		}
+	}
+		
  document.getElementById("openFile1").addEventListener('change',  function () {
 	 var fr = new FileReader();
 	 fr.onload = function () {
 		let str = this.result;
 		let j_str=JSON.parse(str);
-		console.log(j_str);
+		let a=obj_arr(j_str,'');
+		let res={};
+		try{
+			let i=0;
+			while(i<a.length){
+				let s=(typeof a[i]==='object')?true:false;
+				if(s){
+							let b=obj_arr(a[i][1],a[i][2]);
+							if(b.length>0){
+								for(let r=0, len_r=b.length;r<len_r;r++){
+									if(typeof b[r][1]==='object'){
+										a.push(b[r]);
+									}
+									
+										if(typeof res[b[r][0]]==='undefined'){
+											res[b[r][0]]=[ [ b[r][2], b[r][1] ] ];
+										}else{
+											res[b[r][0]].push( [ b[r][2], b[r][1] ]);
+										}
+									
+								}
+							}
+					}
+				i++;
+			}
+		}catch(e){console.error(e);}finally{
+			console.group('JSON object:');
+				console.dir(j_str);
+			console.groupEnd();
+			console.group('By key name ( [path, value] ):');
+				console.dir(res);
+			console.groupEnd();
+		}
+		
+		
+		
 	}
 	fr.readAsText(this.files[0]);
 }); 
