@@ -28,6 +28,17 @@
 		let j_str=JSON.parse(str);
 		let a=obj_arr(j_str,'');
 		let res={};
+		if(a.length>0){
+			for(let r=0, len_r=a.length;r<len_r;r++){
+						if(typeof res[a[r][0]]==='undefined'){
+							res[a[r][0]]=[ [ a[r][2], a[r][1] ] ];
+						}else{
+							res[a[r][0]].push( [ a[r][2], a[r][1] ]);
+						}		
+			}
+		}
+		
+		
 		try{
 			let i=0;
 			while(i<a.length){
