@@ -165,6 +165,14 @@ let bpt=chd[54];
 let hwl=chd[60];
 pitch.style.width=(Math.abs(right_crb.x.baseVal.value)+Math.abs(left_crb.x.baseVal.value))+'px';
 pitch.style.height=(Math.abs(top_sdl.y.baseVal.value)+Math.abs(top_sdl.y.baseVal.value)+Math.abs(top_sdl.height.baseVal.value))+'px';
+let scoreboard={
+	board: document.getElementById('scoreboardSct'),
+	htn: document.getElementById('htm'),
+	atn: document.getElementById('atm'),
+	hts: document.getElementById('hs'),
+	ats: document.getElementById('as')
+}
+
 function rsz(){
 let ptw=window.getComputedStyle(pitch);
 let ptr=absBoundingClientRect(pitch);
@@ -179,21 +187,15 @@ let bdyCw=parseFloat(bdw.width);
 pitch.style.transformOrigin='top left';
 let s=(bdyCw<bdyCh)?bdyCw/ptww:bdyCh/ptwh;
 pitch.style.transform='scale('+s+')';
+let hwlR=absBoundingClientRect(hwl);
+let sb_sep_R=absBoundingClientRect(sb_sep);
+let sepCen=sb_sep_R.width*0.5+sb_sep_R.left;
+let hwlCen=(hwlR.width*0.5+hwlR.left);
+scoreboard.board.style.marginLeft=(hwlCen-sepCen)+'px';
 }
 
 rsz();
 
-let scoreboard={
-	board: document.getElementById('scoreboardSct'),
-	htn: document.getElementById('htm'),
-	atn: document.getElementById('atm'),
-	hts: document.getElementById('hs'),
-	ats: document.getElementById('as')
-}
-
-let hwlR=absBoundingClientRect(hwl);
-let sb_sep_R=absBoundingClientRect(sb_sep);
-scoreboard.board.style.marginLeft=((hwlR.left+0.5*hwlR.width)-(sb_sep_R.left+0.5*sb_sep_R.width))+'px';
 
 window.onresize=function(event){
 	rsz();
