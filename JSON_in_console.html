@@ -12,7 +12,8 @@
 			for (var key in obj) {
 				if (obj.hasOwnProperty(key)) {
 					let b=obj[key];
-					let at=`['${key}']`;
+					let kEsc=key.split("'").join("\'");
+					let at=`['${kEsc}']`;
 					out.push([key,b,anc+at]);
 				}
 			}
