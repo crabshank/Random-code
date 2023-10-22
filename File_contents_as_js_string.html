@@ -20,7 +20,7 @@ input[type="file" i]::-webkit-file-upload-button  {
 <option>var</option>
 </select>
 <input type="text" id="str_nm" style="border-width: 0px;width: 30%;margin-left: 0.17%;margin-right: 0.25%;">
-<textarea id="txt1" style="width: 64%; margin-left: 0.02%;"></textarea><br>
+<br>
 </section>
 <section id="js_setup_c" style=" display: inline-flex; position: absolute; top: 16.7%;">
 <button id="svb" style="display: none;">
@@ -38,8 +38,7 @@ input[type="file" i]::-webkit-file-upload-button  {
 <br>
 
  <script>
-
-var nos1=document.getElementById("txt1");
+var str='';
 var nm=document.getElementById("str_nm");
 var svrb=document.getElementById("svb");
 var svra=document.getElementById("sva");
@@ -61,17 +60,10 @@ function getAdjCurrDateTimeOffset(outISO,ignoreTimeZones,offst){
 }
 
 function escaper(s){
-return s.split('\\').join('\\u005C').split('${').join('\\u0024\\u007B').split('`').join('\\u0060');
+	return s.split('\\').join('\\u005C').split('${').join('\\u0024\\u007B').split('`').join('\\u0060');
 }
 
-nos1.oninput=()=>{
-		nos1.style.height='min-content';
-		nos1.style.height=nos1.scrollHeight+3;
-};
-
 svra.onclick=()=>{
-		let str=nos1.value;
-		nos1.value = str;
 		str=sl.value+' '+nm.value+'='+str;
 		svra.setAttribute('href', 'data:text/javascript;charset=utf-8,' + encodeURIComponent(str));
 		svra.setAttribute('download', (dtChk.checked)?nm.getAttribute('file_name_d'):nm.getAttribute('file_name'));
@@ -84,30 +76,17 @@ jssc.style.top=(b+4)+'px';
 }
 
 alignBtns();
-rsz(false);
 
-function rsz(forceShowBtn){
-	nos1.style.height='min-content';
-	nos1.style.height=nos1.scrollHeight+3;
-	if(forceShowBtn){
-		svrb.style.cssText='display: initial;';	
-	}
-	document.body.scrollTop=0;
-	document.body.scrollLeft=0;
-	labl.style.cssText='transform-origin:left center;';			
-	let bRct=svrb.getBoundingClientRect();
-	let txRct=nos1.getBoundingClientRect();
-	let lbRct=lbl.getBoundingClientRect();
-	let w=txRct.left-bRct.right;
-	labl.style.cssText='transform-origin:left center; transform: scale('+((w-3)/lbRct.width)+')'+((forceShowBtn)?' translateX(3px);':';');			
-}
+
  document.getElementById("openFile1").addEventListener('change',  function () {
+	svrb.style.cssText='display: none;';	
 	 var fr = new FileReader();
 	 fr.onload = function () {
-		let str = this.result;
-		str='`'+(escaper(str))+'`;';
-		nos1.value = str;
-		rsz(true);
+		str = this.result;
+		let esc = escaper(str);
+		str='`'+(esc)+'`;';
+		esc=null;
+		svrb.style.cssText='display: initial;margin-right: 1.3ch;';	
 	}
 	
 	let todate_f=getAdjCurrDateTimeOffset(true).split('T')[0].split('-').join('_');
