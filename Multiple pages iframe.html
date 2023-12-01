@@ -1,15 +1,122 @@
 <html>
 
 <head>
+	<style>
+		button{
+			background-color: buttonface !important;
+		}
+		div[contentEditable]{
+			-webkit-appearance: textfield;
+			background-color: white;
+			-webkit-rtl-ordering: logical;
+			cursor: text;
+			padding: 1px;
+			border-width: 1px;
+			border-style: inset;
+			border-color: initial;
+			border-image: initial;
+			text-rendering: auto;
+			color: initial;
+			letter-spacing: normal;
+			word-spacing: normal;
+			text-transform: none;
+			text-indent: 0px;
+			text-shadow: none;
+			display: inline-block;
+			text-align: start;
+			margin: 0em;
+			-webkit-writing-mode: horizontal-tb !important;
+		}
+	</style>
 </head>
 
 <body>
 <title>Multiple iframes per page</title>
 <h1 style="text-align: center">Multiple iframes per page</h1>
-<section class="multi_iframe" style="display: list-item !important;"><button style="background-color: buttonface !important;">Clear</button><input style="width: 95% !important; background-color: buttonface !important;" type="text"></input><iframe style="width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important; height: 86% !important;" allowfullscreen></iframe><br><br></section>
+<section id="list_iframe"  style="width: 98.7% !important;text-wrap: nowrap !important;display: flex !important;margin-bottom: 0.3ch !important;">
+	<div id="list_text" contenteditable style="width: -webkit-fill-available;"></div>
+	<button id="list_btn">Open list</button>
+</section>
+<section class="multi_iframe" style="display: list-item !important;"><button>Clear</button><input style="width: 95% !important; background-color: buttonface !important;" type="text"></input><iframe style="width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important; height: 86% !important;" allowfullscreen></iframe><br><br></section>
 
 <script>
+const urlregex =/\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()[\]{};:'".,<>?«»“”‘’]))/gi;
+
 let sct=[...document.querySelectorAll('SECTION.multi_iframe')];
+let list_text=document.getElementById('list_text');
+let list_btn=document.getElementById('list_btn');
+let listCreate=[];
+
+
+list_btn.onclick=(event)=>{
+	let txt = list_text.innerText;
+	let urls = '';
+	urls=txt.match(urlregex);
+	if(urls.length>0){
+		listCreate=urls;
+		list_text.innerText = urls.join('\n');
+		let scts=[...document.querySelectorAll('SECTION.multi_iframe')];
+		let scl=scts.length;
+		if(scl>0){
+			for(let i=scl-1; i>=0; i--){
+				scts[i].children[0].click(); //delete all
+			}
+		}
+		scts=document.querySelectorAll('SECTION.multi_iframe');
+		let s0u=scts[0].children[1];
+		s0u.value=listCreate[0];
+		listCreate=listCreate.slice(1);
+		inp_f({target:s0u.parentElement});
+	}
+}
+
+let inp_f0=function(event){
+	let t=event.target;
+	let b=t.children[0];
+	let u=t.children[1];
+	let f=t.children[2];
+	if(event.inputType==="insertFromDrop"){
+		u.value=u.getAttribute('drp');
+	}else{
+		u.setAttribute('drp','');
+	}
+	b.onclick=function(){
+		u.value="";
+		f.src="";
+		chk(t);
+	}
+	chk(t,1);
+	if(listCreate.length>0){
+		let lsf=[...document.querySelectorAll('SECTION.multi_iframe')].at(-1);
+		let lc1=lsf.children[1];
+		lc1.value=listCreate[0];
+		listCreate=listCreate.slice(1);
+		inp_f({target:lc1.parentElement});
+	}
+}
+
+let inp_f=function(event){
+	let sc=event.target;
+	let t=sc.children[1];
+	if(event.inputType==="insertFromDrop"){
+		t.value=t.getAttribute('drp'); 
+	}else{
+		t.setAttribute('drp','');
+	}
+	let tst=[...document.querySelectorAll('SECTION.multi_iframe')];
+	if (sc===tst[tst.length-1]){
+		chk(sc,0);
+	}else{
+		chk(sc,1);
+	}
+	if(listCreate.length>0){
+		let lsf=[...document.querySelectorAll('SECTION.multi_iframe')].at(-1);
+		let lc1=lsf.children[1];
+		lc1.value=listCreate[0];
+		listCreate=listCreate.slice(1);
+		inp_f({target:lc1.parentElement});
+	}
+}
 
 let chk=function(sci,init){
 	let b=sci.children[0];
@@ -17,42 +124,31 @@ let chk=function(sci,init){
 	let f=sci.children[2];
 let sct2=[...document.querySelectorAll('SECTION.multi_iframe')];
 	if (((u.value!="")&&(sct2.length==1))||((u.value!="")&&(init!=1)&&(sct2.length>1))){
-	let sc=document.createElement('section');
-	sc.style.cssText='display: list-item !important;';
-	sc.className='multi_iframe';
-	sc.innerHTML='<button style="background-color: buttonface !important;">Clear</button><input style="width: 95% !important; background-color: buttonface !important;" type="text"></input><iframe style="display: none !important; width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important; height: 86% !important;" allowfullscreen></iframe><br><br>';
-	sci.insertAdjacentElement('afterend', sc);
-	sc.children[0].onclick=function(){
-	sc.children[1].value="";
-	sc.children[2].src="";
-	sc.children[2].style.display="none";
-	let tst=[...document.querySelectorAll('SECTION.multi_iframe')];
-	if (sc===tst[tst.length-1]){
-	chk(sc,2);
-	}else{
-	chk(sc,1);
-	}
-	}
-	sc.children[1].ondrop=(event)=>{
-		let t=event.target;
-		t.setAttribute('drp',event.dataTransfer.getData("text"));
-	}
-	sc.oninput= function(event){
-	let t=sc.children[1];
-	if(event.inputType==="insertFromDrop"){
-		t.value=t.getAttribute('drp');
-	}else{
-		t.setAttribute('drp','');
-	}
-	let tst=[...document.querySelectorAll('SECTION.multi_iframe')];
-	if (sc===tst[tst.length-1]){
-	chk(sc,0);
-	}else{
-	chk(sc,1);
-	}
-	}
+		let sc=document.createElement('section');
+		sc.style.cssText='display: list-item !important;';
+		sc.className='multi_iframe';
+		sc.innerHTML='<button style="background-color: buttonface !important;">Clear</button><input style="width: 95% !important; background-color: buttonface !important;" type="text"></input><iframe style="display: none !important; width: 98.7% !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-right-width: 0px !important; border-top-width: 0px; !important; height: 86% !important;" allowfullscreen></iframe><br><br>';
+		sci.insertAdjacentElement('afterend', sc);
+		sc.children[0].onclick=function(){
+			sc.children[1].value="";
+			sc.children[2].src="";
+			sc.children[2].style.display="none";
+			let tst=[...document.querySelectorAll('SECTION.multi_iframe')];
+			if (sc===tst[tst.length-1]){
+				chk(sc,2);
+			}else{
+				chk(sc,1);
+			}
+		}
+		sc.children[1].ondrop=(event)=>{
+			let t=event.target;
+			t.setAttribute('drp',event.dataTransfer.getData("text"));
+		}
+		sc.oninput= function(event){
+			inp_f(event);
+		}
 	}else if((u.value=="")&&(sct2.length>1)&&(init!=2)){
-	sci.remove();
+		sci.remove();
 	}
 	f.src=u.value;
 	f.style.display="initial";
@@ -62,20 +158,7 @@ sct[0].children[1].ondrop=(event)=>{
 		t.setAttribute('drp',event.dataTransfer.getData("text"));
 	}
 sct[0].oninput= function(event){
-	let b=sct[0].children[0];
-	let u=sct[0].children[1];
-	let f=sct[0].children[2];
-	if(event.inputType==="insertFromDrop"){
-		u.value=u.getAttribute('drp');
-	}else{
-		u.setAttribute('drp','');
-	}
-	b.onclick=function(){
-	u.value="";
-	f.src="";
-	chk(sct[0]);
-	}
-	chk(sct[0],1);
+	inp_f0(event);
 }
 
 
