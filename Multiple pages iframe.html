@@ -145,7 +145,7 @@ let sct2=[...document.querySelectorAll('SECTION.multi_iframe')];
 			t.setAttribute('drp',event.dataTransfer.getData("text"));
 		}
 		sc.oninput= function(event){
-			inp_f({target:sc});
+			inp_f({target:sc, inputType:event.inputType});
 		}
 	}else if((u.value=="")&&(sct2.length>1)&&(init!=2)){
 		sci.remove();
@@ -158,7 +158,7 @@ sct[0].children[1].ondrop=(event)=>{
 		t.setAttribute('drp',event.dataTransfer.getData("text"));
 	}
 sct[0].oninput= function(event){
-	inp_f0({target:sct[0]});
+	inp_f0({target:sct[0], inputType:event.inputType});
 }
 
 
