@@ -7,8 +7,7 @@
  <section style="display: flex; flex-direction: row;"><label for="openFile1" style="text-wrap: nowrap;">Load file: </label><input type="file"  id="openFile1" style="margin-left: 4px;vertical-align: top;text-overflow: clip;width: -webkit-fill-available;text-wrap: wrap;"></input></section>
 <iframe id="ifrm" style="display:none"></iframe>
  
-  <script>		
-  let idoc;
+  <script>
  document.getElementById("openFile1").addEventListener('change',  function (event) {
     let file = this.files[0];
     let fileURL = URL.createObjectURL(file);
