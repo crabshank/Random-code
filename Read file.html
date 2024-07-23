@@ -14,10 +14,9 @@
     let fileURL = URL.createObjectURL(file);
     let ifr=document.getElementById("ifrm");
     ifr.src=fileURL;
-    idoc=ifr.contentWindow.document;
-    console.group("Variable 'idoc' (without quotes) is the iframe document");
-    console.log(idoc);
-    console.dir(idoc);
+    console.group("iframe:");
+    console.log(ifr);
+    console.dir(ifr);
     console.groupEnd();
 }); 
  </script>
